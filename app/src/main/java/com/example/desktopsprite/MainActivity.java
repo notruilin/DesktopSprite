@@ -16,21 +16,24 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button);
         ViewGroup rootView = findViewById(R.id.root_view);
 
-        DesktopSpriteView spriteView = new DesktopSpriteView(getApplicationContext());
-
-        rootView.addView(spriteView);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Clicked three");
+                Log.w("myApp", "Click Button!");
                 if (!Settings.canDrawOverlays(MainActivity.this)) {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                     startActivityForResult(intent, 0);
@@ -39,5 +42,10 @@ public class MainActivity extends AppCompatActivity {
                 startService(intent);
             }
         });
+    }
+
+    public void updateButton(String txt) {
+        Button button = findViewById(R.id.button);
+        button.setText(txt);
     }
 }
