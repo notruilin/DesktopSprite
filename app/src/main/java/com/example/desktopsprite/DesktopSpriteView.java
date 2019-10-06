@@ -49,7 +49,7 @@ public class DesktopSpriteView extends FrameLayout {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 playHangAnim();
-                showDialog("Put me down!!!!", 1000);
+                showDialog("Put me down!!!! Test Github sync. Lalalalala.???", 1000);
                 spriteX = (int) event.getRawX();
                 spriteY = (int) event.getRawY();
                 //Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString() + " Y: " + ((Integer)spriteY).toString());
