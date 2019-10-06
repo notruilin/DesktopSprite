@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class DesktopSpriteView extends FrameLayout {
+import static android.widget.RelativeLayout.RIGHT_OF;
+
+public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
@@ -34,7 +36,7 @@ public class DesktopSpriteView extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         ImageView imageView = findViewById(R.id.sprite);
         imageView.setImageResource(R.drawable.stand);
-        RelativeLayout view = findViewById(R.id.sprite_layout);
+        LinearLayout view = findViewById(R.id.sprite_layout);
         spriteWidth = view.getLayoutParams().width;
         spriteHeight = view.getLayoutParams().height;
         DisplayMetrics metrics = new DisplayMetrics();
@@ -99,7 +101,7 @@ public class DesktopSpriteView extends FrameLayout {
             LayoutInflater inflater = LayoutInflater.from(context);
             View spriteLayout = inflater.inflate(R.layout.sprite_layout, null);
             dialogLayout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) spriteLayout, false);
-            this.addView(dialogLayout);
+            this.addView(dialogLayout, -1);
         }
         else {
             dialogLayout.setVisibility(View.VISIBLE);
@@ -108,15 +110,6 @@ public class DesktopSpriteView extends FrameLayout {
         TextView textView = findViewById(R.id.dialog_txt);
         textView.setText(txt);
 
-        if (spriteX < screenWidth / 2) {
-            findViewById(R.id.dialog_left_triangle).setVisibility(View.VISIBLE);
-            findViewById(R.id.dialog_right_triangle).setVisibility(View.GONE);
-        }
-        else {
-            findViewById(R.id.dialog_right_triangle).setVisibility(View.VISIBLE);
-            findViewById(R.id.dialog_left_triangle).setVisibility(View.GONE);
-        }
-
         dialogLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -124,6 +117,5 @@ public class DesktopSpriteView extends FrameLayout {
             }
         }, duration);
 
-        findViewById(R.id.sprite_layout).forceLayout();
     }
 }

@@ -7,11 +7,12 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/dialog_left_triangle"
+        android:id="@+id/dialog_right_triangle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/left_triangle"
-        android:layout_marginTop="8dp"/>
+        android:src="@drawable/triangle"
+        android:paddingTop="10dp"/>
+
 
     <TextView
         android:id="@+id/dialog_txt"
@@ -23,12 +24,5 @@
         android:textColor="#000000"
         android:background="@drawable/rectangle"
         tools:visibility="visible"/>
-
-    <ImageView
-        android:id="@+id/dialog_right_triangle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/right_triangle"
-        android:layout_marginTop="8dp"/>
 
 </LinearLayout>
