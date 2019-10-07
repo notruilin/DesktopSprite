@@ -11,6 +11,8 @@ public class DesktopSpriteService extends Service {
 
     private DesktopSpriteManager spriteManager;
 
+    private SensorsManager sensorsManager;
+
     public DesktopSpriteService() {
 
     }
@@ -31,6 +33,8 @@ public class DesktopSpriteService extends Service {
         Log.w("myApp", "onStartCommand");
 
         if (!spriteExist) {
+            if (sensorsManager == null)
+                sensorsManager = new SensorsManager(this);
             spriteExist = true;
             spriteManager = new DesktopSpriteManager();
             spriteManager.showSprite(getApplicationContext());
@@ -47,5 +51,10 @@ public class DesktopSpriteService extends Service {
     public void onDestroy() {
         spriteManager.destroySprite();
         super.onDestroy();
+    }
+
+    // Called by SensorsManger when the proximity is less than 3 cm, only called one time if the user stays closer than 3 cm
+    public void tooClose(float proximity) {
+        Log.w("myApp", "Too close!!!!!!!!!!!!!!!!!");
     }
 }

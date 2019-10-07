@@ -2,6 +2,7 @@ package com.example.desktopsprite;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -12,7 +13,7 @@ public class DesktopSpriteManager {
 
     public void showSprite(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        spriteView = new DesktopSpriteView(context);
+        spriteView = new DesktopSpriteView(context, this);
         WindowManager.LayoutParams spriteParams = new WindowManager.LayoutParams();
         spriteParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         spriteParams.format = PixelFormat.RGBA_8888;
@@ -32,4 +33,11 @@ public class DesktopSpriteManager {
         Log.w("myApp", "destroy");
         windowManager.removeView(spriteView);
     }
+
+    public void checkLight() {
+        float light  = SensorsManager.getInstance().getLight();
+        spriteView.showDialog("The light is " + light + " lx", 3000);
+    }
+
+
 }
