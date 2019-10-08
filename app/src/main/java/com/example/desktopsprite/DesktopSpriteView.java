@@ -4,20 +4,15 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import static android.widget.RelativeLayout.RIGHT_OF;
 
 public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;

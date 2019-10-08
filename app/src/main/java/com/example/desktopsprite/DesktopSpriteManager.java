@@ -2,7 +2,6 @@ package com.example.desktopsprite;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;

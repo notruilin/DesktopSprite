@@ -12,6 +12,7 @@ public class DesktopSpriteService extends Service {
     private DesktopSpriteManager spriteManager;
 
     private SensorsManager sensorsManager;
+    private LocationGPSManager locationGPSManager;
 
     public DesktopSpriteService() {
 
@@ -35,6 +36,8 @@ public class DesktopSpriteService extends Service {
         if (!spriteExist) {
             if (sensorsManager == null)
                 sensorsManager = new SensorsManager(this);
+            if (locationGPSManager == null)
+                locationGPSManager = new LocationGPSManager();
             spriteExist = true;
             spriteManager = new DesktopSpriteManager();
             spriteManager.showSprite(getApplicationContext());
@@ -56,5 +59,16 @@ public class DesktopSpriteService extends Service {
     // Called by SensorsManger when the proximity is less than 3 cm, only called one time if the user stays closer than 3 cm
     public void tooClose(float proximity) {
         Log.w("myApp", "Too close!!!!!!!!!!!!!!!!!");
+    }
+
+    // Called by SensorsManger when the user keeps shaking the phone, "times" presents how many times did the user shake
+    public void keepShaking(int times) {
+        Log.w("myApp", "Keep Shaking!!!!!!!!!!!!!!!!!");
+    }
+
+    // Just example, can delete
+    public void testGetLocation() {
+        double[] location = locationGPSManager.getLocation();
+        Log.w("myApp", "longitude: " + location[0] + " latitude: " + location[1]);
     }
 }
