@@ -39,7 +39,7 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.stand);
+        imageView.setImageResource(R.drawable.see_left);
 //        animationDrawable = (AnimationDrawable) imageView.getDrawable();
 //        animationDrawable.start();
 
