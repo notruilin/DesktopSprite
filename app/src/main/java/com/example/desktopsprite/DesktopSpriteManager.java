@@ -38,5 +38,7 @@ public class DesktopSpriteManager {
         spriteView.showDialog("The light is " + light + " lx", 3000);
     }
 
-
+    public void startVomit() {
+        spriteView.playVomitAnim();
+    }
 }
