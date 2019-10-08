@@ -21,13 +21,11 @@
             android:textAllCaps="false" />
 
         <Switch
-            android:id="@+id/switch1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="summon pet" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="PetName"
@@ -37,7 +35,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -45,7 +42,6 @@
             android:text="Name" />
 
         <Button
-            android:id="@+id/button_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save" />

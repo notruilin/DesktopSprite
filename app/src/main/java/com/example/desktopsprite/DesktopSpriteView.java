@@ -39,7 +39,10 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.stand);
+        imageView.setImageResource(R.drawable.move_anim);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+
         LinearLayout view = findViewById(R.id.sprite_layout);
         spriteWidth = view.getLayoutParams().width;
         spriteHeight = view.getLayoutParams().height;
@@ -99,7 +102,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void playHangAnim() {
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.hang_anim);
+        imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }

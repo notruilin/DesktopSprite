@@ -1,5 +1,6 @@
 package com.example.desktopsprite.ui.notifications;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,8 @@ public class NotificationsFragment extends Fragment {
                 Log.w("myApp", "hour = " + hour);
                 // TODO new clock alarm
 
+                // AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
+                // alarmManager.set();
             }
         });
 

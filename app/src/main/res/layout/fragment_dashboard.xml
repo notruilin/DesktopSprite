@@ -14,19 +14,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Switch
-            android:id="@+id/switch_clock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="show clock alarm" />
 
         <Switch
-            android:id="@+id/switch_weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="show weather" />
 
         <Button
-            android:id="@+id/button_save_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save setting" />
