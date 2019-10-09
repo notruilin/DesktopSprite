@@ -151,16 +151,13 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void showOptionBar(int duration) {
-        Log.w("myApp", "1");
         View optionLayout = findViewById(R.id.option_bar_layout);
         if (optionLayout == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View spriteLayout = inflater.inflate(R.layout.option_bar_layout, null);
             optionLayout = inflater.inflate(R.layout.option_bar_layout, (ViewGroup) spriteLayout, false);
             this.addView(optionLayout, -1);
-            Log.w("myApp", "2");
             setButtonsListeners();
-            Log.w("myApp", "3");
         }
         else {
             optionLayout.setVisibility(View.VISIBLE);
