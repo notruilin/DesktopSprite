@@ -39,7 +39,7 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.see_left);
+        imageView.setImageResource(R.drawable.vomit_anim);
 //        animationDrawable = (AnimationDrawable) imageView.getDrawable();
 //        animationDrawable.start();
 
@@ -102,7 +102,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void playHangAnim() {
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.vomit_anim);
+        imageView.setImageResource(R.drawable.crawl_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
@@ -110,7 +110,7 @@ public class DesktopSpriteView extends LinearLayout {
     void stopHangAnim() {
         animationDrawable.stop();
         ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.stand);
+        imageView.setImageResource(R.drawable.vomit_anim);
     }
 
     void showDialog(String txt, int duration) {
