@@ -29,8 +29,10 @@ public class DesktopSpriteView extends LinearLayout {
     private static final long DOUBLE_CLICK_TIME = 300;
     private long lastTouchTime;
 
-    private boolean hanging = false;
+    private boolean holding = false;
     private boolean optionBarShowing = false;
+
+    private ImageView imageView;
 
     public DesktopSpriteView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
@@ -38,8 +40,8 @@ public class DesktopSpriteView extends LinearLayout {
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
-        ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.vomit_anim);
+        imageView = findViewById(R.id.sprite);
+        imageView.setImageResource(R.drawable.see_left);
 //        animationDrawable = (AnimationDrawable) imageView.getDrawable();
 //        animationDrawable.start();
 
@@ -67,10 +69,10 @@ public class DesktopSpriteView extends LinearLayout {
                 //Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString() + " Y: " + ((Integer)spriteY).toString());
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!hanging) {
-                    hanging = true;
-                    playHangAnim();
-                    showDialog("Put me down!!!! Test Github sync. Lalalalala.???", 1000);
+                if (!holding) {
+                    holding = true;
+                    showHolding();
+                    showDialog("Put me down!", 1000);
                 }
                 int dx = (int) event.getRawX() - spriteX;
                 int dy = (int) event.getRawY() - spriteY;
@@ -82,9 +84,9 @@ public class DesktopSpriteView extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (hanging) {
-                    hanging = false;
-                    stopHangAnim();
+                if (holding) {
+                    holding = false;
+                    setToDefaultView();
                 }
         }
         return true;
@@ -100,17 +102,18 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager.updateViewLayout(this, spriteParams);
     }
 
-    void playHangAnim() {
-        ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.crawl_anim);
+    void playVomitAnim() {
+        imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
 
-    void stopHangAnim() {
-        animationDrawable.stop();
-        ImageView imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.vomit_anim);
+    void showHolding() {
+        imageView.setImageResource(R.drawable.holding);
+    }
+
+    void setToDefaultView() {
+        imageView.setImageResource(R.drawable.see_left);
     }
 
     void showDialog(String txt, int duration) {
