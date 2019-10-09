@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_1" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_2" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_3" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_4" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_1" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_2" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_3" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_4" android:duration="200"></item>
+
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_1" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_2" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_3" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_4" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_1" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_2" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_3" android:duration="200"></item>
+    <item android:drawable="@drawable/sleep_play_aeolian_bells_4" android:duration="200"></item>
+
+</animation-list>
