@@ -41,7 +41,7 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.sleep_play_aeolian_bell);
+        imageView.setImageResource(R.drawable.shower);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
 
