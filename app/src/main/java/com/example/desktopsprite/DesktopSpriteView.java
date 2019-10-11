@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.os.Handler;
 
 public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;
@@ -106,7 +107,32 @@ public class DesktopSpriteView extends LinearLayout {
         imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        default_when_animation_ends(animationDrawable);
     }
+
+    void drinkMilk(){
+        imageView.setImageResource(R.drawable.feed_milk);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
+        animationDrawable.start();
+        default_when_animation_ends(animationDrawable);
+
+    }
+
+    void default_when_animation_ends(AnimationDrawable animationDrawable){
+        int duration = 0;
+        for(int i=0;i<animationDrawable.getNumberOfFrames();i++){
+            duration += animationDrawable.getDuration(i);
+        }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setToDefaultView();
+            }
+        },duration);
+    }
+
 
     void showHolding() {
         imageView.setImageResource(R.drawable.holding);
@@ -115,6 +141,7 @@ public class DesktopSpriteView extends LinearLayout {
     void setToDefaultView() {
         imageView.setImageResource(R.drawable.see_left);
     }
+
 
     void showDialog(String txt, int duration) {
         View dialogLayout = findViewById(R.id.dialog_layout);
@@ -181,13 +208,18 @@ public class DesktopSpriteView extends LinearLayout {
 
     void setButtonsListeners() {
         Log.w("myApp", "setButtonsListeners");
+
         final Button eatBtn = findViewById(R.id.btn_eat);
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Eat!");
+                desktopSpriteManager.feed();
+
+
             }
         });
+
 
         final Button lightBtn = findViewById(R.id.btn_light);
         lightBtn.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +235,7 @@ public class DesktopSpriteView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Weather!");
+                desktopSpriteManager.checkWeather();
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.desktopsprite;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -37,6 +38,18 @@ public class DesktopSpriteManager {
         float light  = SensorsManager.getInstance().getLight();
         spriteView.showDialog("The light is " + light + " lx", 3000);
     }
+
+    public void feed(){
+        spriteView.drinkMilk();
+    }
+
+
+    public void checkWeather(){
+        LocationGPSManager gpsManager = new LocationGPSManager();
+        double[] location = gpsManager.getLocation();
+
+    }
+
 
     public void startVomit() {
         spriteView.playVomitAnim();
