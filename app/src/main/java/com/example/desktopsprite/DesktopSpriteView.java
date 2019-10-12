@@ -39,7 +39,7 @@ public class DesktopSpriteView extends LinearLayout {
     private long lastTouchTime;
 
     private boolean holding = false;
-    private boolean optionBarShowing = false;
+    public boolean optionBarShowing = false;
 
     private ImageView imageView;
 
@@ -142,6 +142,7 @@ public class DesktopSpriteView extends LinearLayout {
         spriteParams.x += dx;
         spriteParams.y += dy;
         windowManager.updateViewLayout(this, spriteParams);
+        desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
     }
 
     void setSpritePosition(int x, int y) {
@@ -149,6 +150,7 @@ public class DesktopSpriteView extends LinearLayout {
         spriteParams.x = x;
         spriteParams.y = y;
         windowManager.updateViewLayout(this, spriteParams);
+        desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
     }
 
     void playVomitAnim() {
@@ -255,94 +257,11 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void onDoubleClick() {
-        Log.w("myApp", "Double Click");
-        Log.w("myApp", "before " + findViewById(R.id.sprite_layout).getLayoutParams().width);
-        showDialog("Double Click", 3000);
-        Log.w("myApp", "after " + findViewById(R.id.sprite_layout).getLayoutParams().width);
         if (optionBarShowing) {
-            hideOptionBar();
+            desktopSpriteManager.hideOptionBar();
         }
         else {
-            showOptionBar(5000);
+            desktopSpriteManager.showOptionBar(5000);
         }
-    }
-
-    void showOptionBar(int duration) {
-        View optionLayout = findViewById(R.id.option_bar_layout);
-        if (optionLayout == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View spriteLayout = inflater.inflate(R.layout.option_bar_layout, null);
-            optionLayout = inflater.inflate(R.layout.option_bar_layout, (ViewGroup) spriteLayout, false);
-            this.addView(optionLayout, -1);
-            setButtonsListeners();
-        }
-        else {
-            optionLayout.setVisibility(View.VISIBLE);
-        }
-
-        optionBarShowing = true;
-
-        optionLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.option_bar_layout).setVisibility(View.GONE);
-                optionBarShowing = false;
-            }
-        }, duration);
-    }
-
-    public void hideOptionBar() {
-        findViewById(R.id.option_bar_layout).setVisibility(View.GONE);
-        optionBarShowing = false;
-    }
-
-    void setButtonsListeners() {
-        Log.w("myApp", "setButtonsListeners");
-
-        final Button eatBtn = findViewById(R.id.btn_eat);
-        eatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("myApp", "Eat!");
-                desktopSpriteManager.feed();
-
-
-            }
-        });
-
-
-        final Button lightBtn = findViewById(R.id.btn_light);
-        lightBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("myApp", "Light!");
-                desktopSpriteManager.checkLight();
-            }
-        });
-
-        final Button weatherBtn = findViewById(R.id.btn_weather);
-        weatherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("myApp", "Weather!");
-                desktopSpriteManager.checkWeather();
-            }
-        });
-
-        final Button stopBtn = findViewById(R.id.btn_stop);
-        stopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("myApp", "Stop!");
-            }
-        });
-
-        final Button moreBtn = findViewById(R.id.btn_more);
-        moreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.w("myApp", "More!");
-            }
-        });
     }
 }
