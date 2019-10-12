@@ -26,7 +26,7 @@ public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
-    private int defalutImageHeight;
+    private int defaultImageHeight;
 
     private int spriteX, spriteY;
     private int statusBarHeight;
@@ -157,6 +157,7 @@ public class DesktopSpriteView extends LinearLayout {
         if (!showing)   return;
         spriteParams.x += dx;
         spriteParams.y += dy;
+        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
         desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
     }
@@ -165,6 +166,7 @@ public class DesktopSpriteView extends LinearLayout {
         if (!showing)   return;
         spriteParams.x = x;
         spriteParams.y = y;
+        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
         desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
     }
@@ -188,30 +190,23 @@ public class DesktopSpriteView extends LinearLayout {
         final int[] location = new int[2];
         imageView.getLocationOnScreen(location);
         imageView.setImageResource(R.drawable.free_fall);
-        imageView.post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defalutImageHeight - statusBarHeight - navigationBarHeight);
-                        animator.setDuration(screenHeight - defalutImageHeight);
-                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
-                            }
-                        });
-                        animator.addListener(new AnimatorListenerAdapter()
-                        {
-                            @Override
-                            public void onAnimationEnd(Animator animation)
-                            {
-                                setToGround();
-                            }
-                        });
-                        animator.start();
-                    }
-                }
-        );
+        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defaultImageHeight - statusBarHeight);
+        animator.setDuration(screenHeight - defaultImageHeight);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                setToGround();
+            }
+        });
+        animator.start();
     }
 
     void default_when_animation_ends(AnimationDrawable animationDrawable){
@@ -250,7 +245,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void setToDefaultView() {
         imageView.setImageResource(R.drawable.see_you);
-        defalutImageHeight = imageView.getDrawable().getIntrinsicWidth();
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
