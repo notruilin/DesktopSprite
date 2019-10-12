@@ -20,14 +20,26 @@ public class DesktopSpriteManager {
         spriteParams.gravity = Gravity.LEFT | Gravity.TOP;
         spriteParams.width = spriteView.spriteWidth;
         spriteParams.height = spriteView.spriteHeight;
-        spriteParams.x = spriteView.screenWidth / 2;
-        spriteParams.y = spriteView.screenHeight / 2;
         spriteView.setSpriteParams(spriteParams);
         windowManager.addView(spriteView, spriteParams);
         spriteView.initSpritePosition();
         spriteView.showing = true;
         MainActivity.getInstance().updateButton("Dismiss");
         Log.w("myApp", "end onStartCommand");
+    }
+
+    public void showOptionBar(Context context) {
+        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        spriteView = new DesktopSpriteView(context, this);
+        WindowManager.LayoutParams spriteParams = new WindowManager.LayoutParams();
+        spriteParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        spriteParams.format = PixelFormat.RGBA_8888;
+        spriteParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        spriteParams.gravity = Gravity.LEFT | Gravity.TOP;
+        spriteParams.width = spriteView.spriteWidth;
+        spriteParams.height = spriteView.spriteHeight;
+        spriteView.setSpriteParams(spriteParams);
+        windowManager.addView(spriteView, spriteParams);
     }
 
     public void destroySprite() {

@@ -256,6 +256,9 @@ public class DesktopSpriteView extends LinearLayout {
 
     void onDoubleClick() {
         Log.w("myApp", "Double Click");
+        Log.w("myApp", "before " + findViewById(R.id.sprite_layout).getLayoutParams().width);
+        showDialog("Double Click", 3000);
+        Log.w("myApp", "after " + findViewById(R.id.sprite_layout).getLayoutParams().width);
         if (optionBarShowing) {
             hideOptionBar();
         }
