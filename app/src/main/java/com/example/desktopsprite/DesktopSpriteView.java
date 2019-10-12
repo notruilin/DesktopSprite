@@ -26,7 +26,11 @@ public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
+    private int defalutImageHeight;
+
     private int spriteX, spriteY;
+    private int statusBarHeight;
+    private int navigationBarHeight;
     private WindowManager.LayoutParams spriteParams;
     private AnimationDrawable animationDrawable;
 
@@ -58,6 +62,18 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager.getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
+
+        statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+
+        navigationBarHeight = 0;
+        resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            navigationBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
     }
 
     public void initSpritePosition() {
@@ -176,9 +192,8 @@ public class DesktopSpriteView extends LinearLayout {
                 new Runnable() {
                     @Override
                     public void run() {
-                        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
-                        Log.w("myApp", Integer.toString(imageView.getHeight()));
-                        animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
+                        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defalutImageHeight - statusBarHeight - navigationBarHeight);
+                        animator.setDuration(screenHeight - defalutImageHeight);
                         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
@@ -235,6 +250,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void setToDefaultView() {
         imageView.setImageResource(R.drawable.see_you);
+        defalutImageHeight = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }

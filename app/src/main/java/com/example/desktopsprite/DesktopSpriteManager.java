@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
 public class DesktopSpriteManager {
     private WindowManager windowManager;
     private DesktopSpriteView spriteView;
