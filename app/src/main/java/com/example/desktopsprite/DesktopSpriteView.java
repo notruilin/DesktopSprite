@@ -6,13 +6,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +79,7 @@ public class DesktopSpriteView extends LinearLayout {
                 //Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString() + " Y: " + ((Integer)spriteY).toString());
                 break;
             case MotionEvent.ACTION_MOVE:
+                desktopSpriteManager.hideOptionBar();
                 if (!holding) {
                     holding = true;
                     showHolding();
