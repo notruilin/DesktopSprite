@@ -171,23 +171,30 @@ public class DesktopSpriteView extends LinearLayout {
         final int[] location = new int[2];
         imageView.getLocationOnScreen(location);
         imageView.setImageResource(R.drawable.feed_milk_2);
-        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
-        animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
-            }
-        });
-        animator.addListener(new AnimatorListenerAdapter()
-        {
-            @Override
-            public void onAnimationEnd(Animator animation)
-            {
-                setToDefaultView();
-            }
-        });
-        animator.start();
+        imageView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
+                        animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
+                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
+                            }
+                        });
+                        animator.addListener(new AnimatorListenerAdapter()
+                        {
+                            @Override
+                            public void onAnimationEnd(Animator animation)
+                            {
+                                setToDefaultView();
+                            }
+                        });
+                        animator.start();
+                    }
+                }
+        );
     }
 
     void default_when_animation_ends(AnimationDrawable animationDrawable){

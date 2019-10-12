@@ -56,22 +56,37 @@ public class OptionBarView extends LinearLayout {
             }
         });
 
-
-        final Button lightBtn = findViewById(R.id.btn_light);
-        lightBtn.setOnClickListener(new View.OnClickListener() {
+        final Button showerBtn = findViewById(R.id.btn_shower);
+        showerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Light!");
-                desktopSpriteManager.checkLight();
+                Log.w("myApp", "Shower!");
             }
         });
 
-        final Button weatherBtn = findViewById(R.id.btn_weather);
-        weatherBtn.setOnClickListener(new View.OnClickListener() {
+        final Button sleepBtn = findViewById(R.id.btn_sleep);
+        sleepBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("myApp", "Sleep!");
+            }
+        });
+
+        final Button outBtn = findViewById(R.id.btn_out);
+        outBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Weather!");
                 desktopSpriteManager.checkWeather();
+            }
+        });
+
+        final Button homeBtn = findViewById(R.id.btn_home);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("myApp", "Go Home!");
+
             }
         });
 
