@@ -1,5 +1,8 @@
 package com.example.desktopsprite;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
@@ -16,6 +19,11 @@ import android.widget.TextView;
 import android.os.Handler;
 
 public class DesktopSpriteView extends LinearLayout {
+    private final static float epsilon = 5;
+
+    // If the sprite is showing
+    public boolean showing = false;
+
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
@@ -42,9 +50,7 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
         imageView = findViewById(R.id.sprite);
-        imageView.setImageResource(R.drawable.see_right);
-        animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
+        setToDefaultView();
 
         LinearLayout view = findViewById(R.id.sprite_layout);
         spriteWidth = view.getLayoutParams().width;
@@ -53,6 +59,11 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager.getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
+    }
+
+    public void initSpritePosition() {
+        setSpritePosition(0, 0);
+        fallToGround();
     }
 
     @Override
@@ -73,7 +84,6 @@ public class DesktopSpriteView extends LinearLayout {
                 if (!holding) {
                     holding = true;
                     showHolding();
-                    showDialog("Put me down!", 1000);
                 }
                 int dx = (int) event.getRawX() - spriteX;
                 int dy = (int) event.getRawY() - spriteY;
@@ -87,10 +97,40 @@ public class DesktopSpriteView extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 if (holding) {
                     holding = false;
-                    setToDefaultView();
+                    if (isHorizontalEdge(event.getRawY())) {
+                        showHorizontalHide();
+                    }
+                    else {
+                        int verticalEdge = isVerticalEdge(event.getRawX());
+                        if (verticalEdge == 0) {
+                            playVerticalLeftHide();
+                        }
+                        else {
+                            if (verticalEdge == 1) {
+                                playVerticalRightHide();
+                            }
+                            else{
+                                fallToGround();
+                            }
+                        }
+                    }
                 }
         }
         return true;
+    }
+
+    private boolean isHorizontalEdge(float y) {
+        if (screenHeight - y < epsilon) {
+            return true;
+        }
+        return false;
+    }
+
+    // Return 0 means left vertical edge, 1 right vertical edge, -1 not vertical edge
+    private int isVerticalEdge(float x) {
+        if (x < epsilon)    return 0;
+        if (screenWidth - x < epsilon) return 1;
+        return -1;
     }
 
     public void setSpriteParams(WindowManager.LayoutParams spriteParams) {
@@ -98,8 +138,16 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void updateSpritePosition(int dx, int dy) {
+        if (!showing)   return;
         spriteParams.x += dx;
         spriteParams.y += dy;
+        windowManager.updateViewLayout(this, spriteParams);
+    }
+
+    void setSpritePosition(int x, int y) {
+        if (!showing)   return;
+        spriteParams.x = x;
+        spriteParams.y = y;
         windowManager.updateViewLayout(this, spriteParams);
     }
 
@@ -116,7 +164,29 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.setOneShot(true);
         animationDrawable.start();
         default_when_animation_ends(animationDrawable);
+    }
 
+    void fallToGround() {
+        final int[] location = new int[2];
+        imageView.getLocationOnScreen(location);
+        imageView.setImageResource(R.drawable.feed_milk_2);
+        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
+        animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                setToDefaultView();
+            }
+        });
+        animator.start();
     }
 
     void default_when_animation_ends(AnimationDrawable animationDrawable){
@@ -133,13 +203,30 @@ public class DesktopSpriteView extends LinearLayout {
         },duration);
     }
 
-
     void showHolding() {
         imageView.setImageResource(R.drawable.holding);
     }
 
+    void showHorizontalHide() {
+        imageView.setImageResource(R.drawable.horizontally_embed);
+    }
+
+    void playVerticalLeftHide() {
+        imageView.setImageResource(R.drawable.vertically_embed_left_anim);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
+    void playVerticalRightHide() {
+        imageView.setImageResource(R.drawable.vertically_embed_right_anim);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
     void setToDefaultView() {
-        imageView.setImageResource(R.drawable.see_left);
+        imageView.setImageResource(R.drawable.see_you);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
     }
 
 

@@ -2,7 +2,6 @@ package com.example.desktopsprite;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.location.LocationManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -25,12 +24,15 @@ public class DesktopSpriteManager {
         spriteParams.y = spriteView.screenHeight / 2;
         spriteView.setSpriteParams(spriteParams);
         windowManager.addView(spriteView, spriteParams);
+        spriteView.initSpritePosition();
+        spriteView.showing = true;
         MainActivity.getInstance().updateButton("Dismiss");
         Log.w("myApp", "end onStartCommand");
     }
 
     public void destroySprite() {
         Log.w("myApp", "destroy");
+        spriteView.showing = false;
         windowManager.removeView(spriteView);
     }
 
