@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -170,12 +171,13 @@ public class DesktopSpriteView extends LinearLayout {
     void fallToGround() {
         final int[] location = new int[2];
         imageView.getLocationOnScreen(location);
-        imageView.setImageResource(R.drawable.feed_milk_2);
+        imageView.setImageResource(R.drawable.free_fall);
         imageView.post(
                 new Runnable() {
                     @Override
                     public void run() {
                         ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
+                        Log.w("myApp", Integer.toString(imageView.getHeight()));
                         animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
                         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override
@@ -188,7 +190,7 @@ public class DesktopSpriteView extends LinearLayout {
                             @Override
                             public void onAnimationEnd(Animator animation)
                             {
-                                setToDefaultView();
+                                setToGround();
                             }
                         });
                         animator.start();
@@ -237,6 +239,13 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.start();
     }
 
+    void setToGround() {
+        imageView.setImageResource(R.drawable.to_ground_anim);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
+        animationDrawable.start();
+        default_when_animation_ends(animationDrawable);
+    }
 
     void showDialog(String txt, int duration) {
         View dialogLayout = findViewById(R.id.dialog_layout);
