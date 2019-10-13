@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.os.Handler;
+import android.util.Log;
 
 public class DesktopSpriteView extends LinearLayout {
     private final static float epsilon = 5;
@@ -91,6 +92,14 @@ public class DesktopSpriteView extends LinearLayout {
                 lastTouchTime = touchTime;
                 spriteX = (int) event.getRawX();
                 spriteY = (int) event.getRawY();
+                int tmp = spriteX+ defaultImageWidth/2;
+                Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString());
+                Log.w("myApp", "down! " + "X: " + ((Integer)tmp).toString());
+                if (spriteX <= tmp){
+                    setToDefaultView();
+                }else{
+                    setToDefaultViewRightSee();
+                }
                 //Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString() + " Y: " + ((Integer)spriteY).toString());
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -271,6 +280,14 @@ public class DesktopSpriteView extends LinearLayout {
 
     void setToDefaultView() {
         imageView.setImageResource(R.drawable.see_you);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
+    void setToDefaultViewRightSee(){
+        imageView.setImageResource(R.drawable.see_right);
         defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();

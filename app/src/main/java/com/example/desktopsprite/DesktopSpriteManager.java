@@ -1,6 +1,5 @@
 package com.example.desktopsprite;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.util.Log;
@@ -145,19 +144,9 @@ public class DesktopSpriteManager {
 
     }
 
-
     public void startVomit() {
         spriteView.playVomitAnim();
     }
 
-    public boolean random_crawl() {
-        boolean crawl_left = Math.random() < 0.5;
-//        int duration = 1000;
-//        ObjectAnimator.ofFloat(spriteView,"translationX",spriteView.spriteX,200F).setDuration(duration).start();
-//        ObjectAnimator.ofFloat(spriteView,"translationY",spriteView.spriteY,0F).setDuration(duration).start();
-        spriteView.play_crawl(crawl_left);
 
-
-        return true;
-    }
 }
