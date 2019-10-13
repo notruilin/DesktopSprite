@@ -224,8 +224,16 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.start();
     }
 
+    //看向左边
     void setToDefaultView() {
-        imageView.setImageResource(R.drawable.see_you);
+        imageView.setImageResource(R.drawable.see_left);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
+    // 看向右边
+    void setToDefaultViewRight() {
+        imageView.setImageResource(R.drawable.see_right);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
