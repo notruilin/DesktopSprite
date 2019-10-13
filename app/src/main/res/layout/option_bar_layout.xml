@@ -4,34 +4,64 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:padding="10dp"
+    android:background="@drawable/rectangle">
 
     <Button
         android:id="@+id/btn_eat"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/btn_eat"
+        android:layout_marginLeft="5dp" />
+
+    <Button
+        android:id="@+id/btn_shower"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/btn_shower"
         android:layout_marginLeft="5dp"/>
 
     <Button
-        android:id="@+id/btn_light"
+        android:id="@+id/btn_sleep"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/btn_light"
+        android:background="@drawable/btn_sleep"
         android:layout_marginLeft="5dp"/>
 
     <Button
-        android:id="@+id/btn_weather"
+        android:id="@+id/btn_out"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/btn_weather"
+        android:background="@drawable/btn_out"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/btn_home"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/btn_home"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/btn_alarm"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/btn_alarm"
+        android:layout_marginLeft="5dp"/>
+
+    <Button
+        android:id="@+id/btn_step"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/btn_step"
         android:layout_marginLeft="5dp"/>
 
     <Button
         android:id="@+id/btn_stop"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@drawable/btn_stop"
+        android:background="@drawable/btn_on"
         android:layout_marginLeft="5dp"/>
 
     <Button

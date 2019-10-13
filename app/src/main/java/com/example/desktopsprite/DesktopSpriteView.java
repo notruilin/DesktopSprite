@@ -25,7 +25,10 @@ public class DesktopSpriteView extends LinearLayout {
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
+    private int defaultImageHeight, defaultImageWidth;
+
     private int spriteX, spriteY;
+    private int statusBarHeight;
     private WindowManager.LayoutParams spriteParams;
     private AnimationDrawable animationDrawable;
 
@@ -57,6 +60,12 @@ public class DesktopSpriteView extends LinearLayout {
         windowManager.getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
+
+        statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
     }
 
     public void initSpritePosition() {
@@ -88,6 +97,10 @@ public class DesktopSpriteView extends LinearLayout {
                 int dy = (int) event.getRawY() - spriteY;
                 spriteX += dx;
                 spriteY += dy;
+                if (spriteX < 0)    spriteX = 0;
+                if (spriteY < 0)    spriteY = 0;
+                if (spriteX > screenWidth)    spriteX = screenWidth;
+                if (spriteY > screenHeight)    spriteY = screenHeight;
                 //Log.w("myApp", "move! " + "dx: " + ((Integer)dx).toString() + " dy: " + ((Integer)dy).toString());
                 if (event.getPointerCount() == 1) {
                     updateSpritePosition(dx, dy);
@@ -97,19 +110,23 @@ public class DesktopSpriteView extends LinearLayout {
                 if (holding) {
                     holding = false;
                     if (isHorizontalEdge(event.getRawY())) {
+                        desktopSpriteManager.setSilenceMode(2);
                         showHorizontalHide();
                     }
                     else {
                         int verticalEdge = isVerticalEdge(event.getRawX());
                         if (verticalEdge == 0) {
+                            desktopSpriteManager.setSilenceMode(2);
                             playVerticalLeftHide();
                         }
                         else {
                             if (verticalEdge == 1) {
+                                desktopSpriteManager.setSilenceMode(2);
                                 playVerticalRightHide();
                             }
                             else{
                                 fallToGround();
+                                desktopSpriteManager.setSilenceMode(0);
                             }
                         }
                     }
@@ -140,16 +157,34 @@ public class DesktopSpriteView extends LinearLayout {
         if (!showing)   return;
         spriteParams.x += dx;
         spriteParams.y += dy;
+        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
-        desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
+        // Move the optionBar with the sprite, set the option bar to the top center of the sprite
+        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
+        // Move the dialog with the sprite
+        moveDialogWithSprite(spriteParams.x, spriteParams.y);
     }
 
     void setSpritePosition(int x, int y) {
         if (!showing)   return;
         spriteParams.x = x;
         spriteParams.y = y;
+        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
-        desktopSpriteManager.setBarViewPosition(spriteParams.x, spriteParams.y);
+        // Move the optionBar with the sprite, set the option bar to the top center of the sprite
+        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
+        // Move the dialog with the sprite
+        moveDialogWithSprite(spriteParams.x, spriteParams.y);
+    }
+
+    void moveDialogWithSprite(int x, int y) {
+        boolean left = true;
+        int toRight = 0;
+        if (x < screenWidth/2) {
+            left = false;
+            toRight = defaultImageWidth;
+        }
+        desktopSpriteManager.setDialogViewPosition(x + toRight, y, left);
     }
 
     void playVomitAnim() {
@@ -170,9 +205,11 @@ public class DesktopSpriteView extends LinearLayout {
     void fallToGround() {
         final int[] location = new int[2];
         imageView.getLocationOnScreen(location);
-        imageView.setImageResource(R.drawable.feed_milk_2);
-        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - imageView.getHeight());
-        animator.setDuration(screenHeight - imageView.getHeight()/2 - location[1]);
+        imageView.setImageResource(R.drawable.free_fall);
+        ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defaultImageHeight - statusBarHeight);
+        int duration = screenHeight - defaultImageHeight - statusBarHeight - location[1];
+        if (duration < 0)   duration = 1;
+        animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -184,7 +221,7 @@ public class DesktopSpriteView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animation)
             {
-                setToDefaultView();
+                setToGround();
             }
         });
         animator.start();
@@ -224,43 +261,20 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.start();
     }
 
-    //看向左边
     void setToDefaultView() {
-        imageView.setImageResource(R.drawable.see_left);
+        imageView.setImageResource(R.drawable.see_you);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
 
-    // 看向右边
-    void setToDefaultViewRight() {
-        imageView.setImageResource(R.drawable.see_right);
+    void setToGround() {
+        imageView.setImageResource(R.drawable.to_ground_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
         animationDrawable.start();
-    }
-
-
-    void showDialog(String txt, int duration) {
-        View dialogLayout = findViewById(R.id.dialog_layout);
-        if (dialogLayout == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View spriteLayout = inflater.inflate(R.layout.sprite_layout, null);
-            dialogLayout = inflater.inflate(R.layout.dialog_layout, (ViewGroup) spriteLayout, false);
-            this.addView(dialogLayout, -1);
-        }
-        else {
-            dialogLayout.setVisibility(View.VISIBLE);
-        }
-
-        TextView textView = findViewById(R.id.dialog_txt);
-        textView.setText(txt);
-
-        dialogLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.dialog_layout).setVisibility(View.GONE);
-            }
-        }, duration);
-
+        default_when_animation_ends(animationDrawable);
     }
 
     void onDoubleClick() {

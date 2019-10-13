@@ -11,55 +11,104 @@ public class DesktopSpriteManager {
     private WindowManager windowManager;
     private DesktopSpriteView spriteView;
     private OptionBarView optionBarView;
+    private DialogView dialogView;
+
+    private long lastShowOptionBarTime;
+    private long lastShowDialogTime;
+
+    // SilenceMode == 0, no limit
+    // SilenceMode == 1, disable dialog
+    // SilenceMode == 2, disable both dialog, option bar
+    private int silenceMode = 0;
 
     public void showSprite(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         spriteView = new DesktopSpriteView(context, this);
-        WindowManager.LayoutParams spriteParams = new WindowManager.LayoutParams();
-        spriteParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        spriteParams.format = PixelFormat.RGBA_8888;
-        spriteParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        spriteParams.gravity = Gravity.LEFT | Gravity.TOP;
-        spriteParams.width = spriteView.spriteWidth;
-        spriteParams.height = spriteView.spriteHeight;
+        WindowManager.LayoutParams spriteParams = setParams(spriteView.spriteWidth, spriteView.spriteHeight);
         spriteView.setSpriteParams(spriteParams);
         windowManager.addView(spriteView, spriteParams);
         spriteView.initSpritePosition();
         spriteView.showing = true;
         MainActivity.getInstance().updateButton("Dismiss");
-        Log.w("myApp", "end onStartCommand");
     }
 
     public void createOptionBar(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         optionBarView = new OptionBarView(context, this);
-        WindowManager.LayoutParams optionBarParams = new WindowManager.LayoutParams();
-        optionBarParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        optionBarParams.format = PixelFormat.RGBA_8888;
-        optionBarParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        optionBarParams.gravity = Gravity.LEFT | Gravity.TOP;
-        optionBarParams.width = optionBarView.barWidth;
-        optionBarParams.height = optionBarView.barHeight;
+        WindowManager.LayoutParams optionBarParams = setParams(optionBarView.barWidth, optionBarView.barHeight);
         optionBarView.setBarParams(optionBarParams);
         windowManager.addView(optionBarView, optionBarParams);
         optionBarView.setVisibility(View.INVISIBLE);
     }
 
-    public void showOptionBar(int duration) {
+    public void createDialog(Context context) {
+        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        dialogView = new DialogView(context, this);
+        WindowManager.LayoutParams dialogParams = setParams(dialogView.dialogWidth, dialogView.dialogHeight);
+        dialogView.setDialogParams(dialogParams);
+        windowManager.addView(dialogView, dialogParams);
+        dialogView.setVisibility(View.INVISIBLE);
+    }
+
+    private WindowManager.LayoutParams setParams(int width, int height) {
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+        params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        params.format = PixelFormat.RGBA_8888;
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        params.gravity = Gravity.LEFT | Gravity.TOP;
+        params.width = width;
+        params.height = height;
+        return params;
+    }
+
+    public void showOptionBar(final int duration) {
+        if (silenceMode == 2)    return;
+        lastShowOptionBarTime = System.currentTimeMillis();
         spriteView.optionBarShowing = true;
         optionBarView.setVisibility(View.VISIBLE);
 
         optionBarView.postDelayed(new Runnable() {
             @Override
             public void run() {
+                // If show option bar again during duration
+                if (System.currentTimeMillis() - lastShowOptionBarTime < duration)  return;
                 optionBarView.setVisibility(View.GONE);
                 spriteView.optionBarShowing = false;
             }
         }, duration);
     }
 
+    public void showDialog(String txt, final int duration) {
+        if (silenceMode >= 1)    return;
+        lastShowDialogTime = System.currentTimeMillis();
+        dialogView.setTxt(txt);
+        dialogView.setVisibility(View.VISIBLE);
+
+        dialogView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // If show dialog again during duration
+                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                dialogView.setVisibility(View.GONE);
+            }
+        }, duration);
+    }
+
+    public void setSilenceMode(int silenceMode) {
+        this.silenceMode = silenceMode;
+    }
+
+    public int getSilenceMode() {
+        return silenceMode;
+    }
+
     public void setBarViewPosition(int x, int y) {
         optionBarView.setPosition(x, y);
+    }
+
+    // If left == true, show the dialog on the left side of sprite
+    public void setDialogViewPosition(int x, int y, boolean left) {
+        dialogView.setPosition(x, y, left);
     }
 
     public void hideOptionBar() {
@@ -72,6 +121,7 @@ public class DesktopSpriteManager {
         spriteView.showing = false;
         windowManager.removeView(spriteView);
         windowManager.removeView(optionBarView);
+        windowManager.removeView(dialogView);
     }
 
     public boolean spriteShowing() {
@@ -80,7 +130,7 @@ public class DesktopSpriteManager {
 
     public void checkLight() {
         float light  = SensorsManager.getInstance().getLight();
-        spriteView.showDialog("The light is " + light + " lx", 3000);
+        showDialog("The light is " + light + " lx", 3000);
     }
 
     public void feed(){
