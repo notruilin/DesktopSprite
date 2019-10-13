@@ -144,8 +144,9 @@ public class DesktopSpriteManager {
 
     }
 
-
     public void startVomit() {
         spriteView.playVomitAnim();
     }
+
+
 }
