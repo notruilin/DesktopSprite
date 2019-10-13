@@ -7,12 +7,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-
 public class DesktopSpriteManager {
     private WindowManager windowManager;
     private DesktopSpriteView spriteView;
     private OptionBarView optionBarView;
+    private DialogView dialogView;
 
     public void showSprite(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -47,6 +46,21 @@ public class DesktopSpriteManager {
         optionBarView.setVisibility(View.INVISIBLE);
     }
 
+    public void createDialog(Context context) {
+        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        dialogView = new DialogView(context, this);
+        WindowManager.LayoutParams dialogParams = new WindowManager.LayoutParams();
+        dialogParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        dialogParams.format = PixelFormat.RGBA_8888;
+        dialogParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        dialogParams.gravity = Gravity.LEFT | Gravity.TOP;
+        dialogParams.width = dialogView.dialogWidth;
+        dialogParams.height = dialogView.dialogHeight;
+        dialogView.setDialogParams(dialogParams);
+        windowManager.addView(dialogView, dialogParams);
+        dialogView.setVisibility(View.INVISIBLE);
+    }
+
     public void showOptionBar(int duration) {
         spriteView.optionBarShowing = true;
         optionBarView.setVisibility(View.VISIBLE);
@@ -60,8 +74,25 @@ public class DesktopSpriteManager {
         }, duration);
     }
 
+    public void showDialog(String txt, int duration) {
+        dialogView.setTxt(txt);
+        dialogView.setVisibility(View.VISIBLE);
+
+        dialogView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogView.setVisibility(View.GONE);
+            }
+        }, duration);
+    }
+
     public void setBarViewPosition(int x, int y) {
         optionBarView.setPosition(x, y);
+    }
+
+    // If left == true, show the dialog on the left side of sprite
+    public void setDialogViewPosition(int x, int y, boolean left) {
+        dialogView.setPosition(x, y, left);
     }
 
     public void hideOptionBar() {
@@ -74,6 +105,7 @@ public class DesktopSpriteManager {
         spriteView.showing = false;
         windowManager.removeView(spriteView);
         windowManager.removeView(optionBarView);
+        windowManager.removeView(dialogView);
     }
 
     public boolean spriteShowing() {
@@ -82,7 +114,7 @@ public class DesktopSpriteManager {
 
     public void checkLight() {
         float light  = SensorsManager.getInstance().getLight();
-        spriteView.showDialog("The light is " + light + " lx", 3000);
+        showDialog("The light is " + light + " lx", 3000);
     }
 
     public void feed(){

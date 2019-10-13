@@ -1,7 +1,6 @@
 package com.example.desktopsprite;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,6 @@ public class OptionBarView extends LinearLayout {
         LinearLayout view = findViewById(R.id.option_bar_layout);
         barWidth = view.getLayoutParams().width;
         barHeight = view.getLayoutParams().height;
-        DisplayMetrics metrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metrics);
         setButtonsListeners();
     }
 
@@ -39,14 +36,12 @@ public class OptionBarView extends LinearLayout {
 
     public void setPosition(int x, int y) {
         if (!desktopSpriteManager.spriteShowing())  return;
-        barParams.x = x;
-        barParams.y = y - 100;
+        barParams.x = x - this.getWidth()/2;
+        barParams.y = y;
         windowManager.updateViewLayout(this, barParams);
     }
 
     void setButtonsListeners() {
-        Log.w("myApp", "setButtonsListeners");
-
         final Button eatBtn = findViewById(R.id.btn_eat);
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +56,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Shower!");
+                desktopSpriteManager.showDialog("Shower!", 1000);
             }
         });
 
@@ -69,6 +65,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Sleep!");
+                desktopSpriteManager.showDialog("Sleep!", 1000);
             }
         });
 
@@ -86,7 +83,25 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Go Home!");
+                desktopSpriteManager.showDialog("Go Home!", 1000);
+            }
+        });
 
+        final Button alarmBtn = findViewById(R.id.btn_alarm);
+        alarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("myApp", "Alarm!");
+                desktopSpriteManager.showDialog("Alarm Alarm Alarm Alarm Alarm aaaaaa asdadsa!", 1000);
+            }
+        });
+
+        final Button stepBtn = findViewById(R.id.btn_step);
+        stepBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("myApp", "Step!");
+                desktopSpriteManager.showDialog("Step Step Step Step Step Step Step Step Step", 1000);
             }
         });
 
