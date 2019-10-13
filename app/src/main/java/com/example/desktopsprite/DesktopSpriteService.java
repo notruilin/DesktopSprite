@@ -2,8 +2,13 @@ package com.example.desktopsprite;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DesktopSpriteService extends Service {
 
@@ -13,6 +18,19 @@ public class DesktopSpriteService extends Service {
 
     private SensorsManager sensorsManager;
     private LocationGPSManager locationGPSManager;
+
+    private Timer timer;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            switch(msg.what){
+                case 1:
+                    Log.w("WY", "handelMessage: 1" );
+                    spriteManager.random_crawl();
+                    break;
+            }
+        }
+    };
 
     public DesktopSpriteService() {
 
@@ -49,6 +67,13 @@ public class DesktopSpriteService extends Service {
             MainActivity.getInstance().updateButton("Summon");
             onDestroy();
         }
+
+        // start circulation timer
+        if (timer == null) {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new RefreshTask(), 3000, 5000);
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -73,5 +98,18 @@ public class DesktopSpriteService extends Service {
     public void testGetLocation() {
         double[] location = locationGPSManager.getLocation();
         Log.w("myApp", "longitude: " + location[0] + " latitude: " + location[1]);
+    }
+
+    class RefreshTask extends TimerTask {
+
+        @Override
+        public void run() {
+            Log.w("wy", "TIMETASK RUNNING: ");
+            Message message = new Message( );
+            message.what = 1;
+            handler.sendMessage(message);
+            //spriteManager.random_crawl();
+        }
+
     }
 }

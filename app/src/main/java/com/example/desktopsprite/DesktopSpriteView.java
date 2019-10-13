@@ -2,18 +2,19 @@ package com.example.desktopsprite;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.os.Handler;
 
 public class DesktopSpriteView extends LinearLayout {
@@ -21,13 +22,16 @@ public class DesktopSpriteView extends LinearLayout {
 
     // If the sprite is showing
     public boolean showing = false;
+    // 0 for default
+    // 1 for some events is running
+    private int current_state = 0;
 
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
 
     private int defaultImageHeight, defaultImageWidth;
 
-    private int spriteX, spriteY;
+    public int spriteX, spriteY;
     private int statusBarHeight;
     private WindowManager.LayoutParams spriteParams;
     private AnimationDrawable animationDrawable;
@@ -76,8 +80,10 @@ public class DesktopSpriteView extends LinearLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //Log.w("myApp", "touched!");
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                current_state = 1;
                 long touchTime = System.currentTimeMillis();
                 if (touchTime - lastTouchTime <= DOUBLE_CLICK_TIME) {
                     onDoubleClick();
@@ -107,6 +113,7 @@ public class DesktopSpriteView extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                current_state = 0;
                 if (holding) {
                     holding = false;
                     if (isHorizontalEdge(event.getRawY())) {
@@ -132,6 +139,7 @@ public class DesktopSpriteView extends LinearLayout {
                     }
                 }
         }
+
         return true;
     }
 
@@ -284,5 +292,55 @@ public class DesktopSpriteView extends LinearLayout {
         else {
             desktopSpriteManager.showOptionBar(5000);
         }
+    }
+
+    public boolean play_crawl(boolean crawl_left) {
+
+        //check current state
+        if (current_state != 0 ){
+            return false;
+        }
+
+
+        int dx = 200;
+        int dy = 0;
+
+//        if (crawl_left){
+//            dx = -1 * dx;
+//        }
+
+
+
+
+        int duration = 1500;
+//        ObjectAnimator.ofFloat(imageView,"translationX",spriteX,200F).setDuration(duration).start();
+
+        int[] location = new int[2];
+        imageView.getLocationOnScreen(location);
+        spriteX = location[0];
+        spriteY = location[1];
+        ValueAnimator animator = ValueAnimator.ofFloat(spriteX, spriteX+dx).setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setSpritePosition((int)(float)animation.getAnimatedValue(),spriteY);
+            }
+        });
+        animator.start();
+
+        imageView.setImageResource(R.drawable.crawl_anim);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
+        animationDrawable.start();
+
+//        TranslateAnimation animation = new TranslateAnimation(spriteX,dx,spriteY,dy);
+//        updateSpritePosition(dx, dy);
+//        TranslateAnimation animation = new TranslateAnimation(  Animation.ABSOLUTE,spriteX,
+//                                                                Animation.ABSOLUTE,100f,
+//                                                                Animation.ABSOLUTE,spriteY,
+//                                                                Animation.ABSOLUTE, 0f);
+//        imageView.startAnimation(animation);
+        default_when_animation_ends(animationDrawable);
+        return true;
     }
 }
