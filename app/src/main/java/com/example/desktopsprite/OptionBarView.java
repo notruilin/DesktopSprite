@@ -17,6 +17,8 @@ public class OptionBarView extends LinearLayout {
 
     public int barWidth, barHeight;
 
+    private int resetDuration = 2000;
+
     public OptionBarView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
         this.context = context;
@@ -42,12 +44,15 @@ public class OptionBarView extends LinearLayout {
     }
 
     void setButtonsListeners() {
+
         final Button eatBtn = findViewById(R.id.btn_eat);
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Eat!");
                 desktopSpriteManager.feed();
+                // Reset hide duration when click the option bar
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -57,6 +62,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Shower!");
                 desktopSpriteManager.showDialog("Shower!", 1000);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -66,6 +72,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Sleep!");
                 desktopSpriteManager.showDialog("Sleep!", 1000);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -75,6 +82,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Weather!");
                 desktopSpriteManager.checkWeather();
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -84,6 +92,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Go Home!");
                 desktopSpriteManager.showDialog("Go Home!", 1000);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -93,6 +102,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Alarm!");
                 desktopSpriteManager.showDialog("Alarm Alarm Alarm Alarm Alarm aaaaaa asdadsa!", 1000);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -102,6 +112,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Step!");
                 desktopSpriteManager.showDialog("Step Step Step Step Step Step Step Step Step", 1000);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
@@ -121,6 +132,7 @@ public class OptionBarView extends LinearLayout {
                 desktopSpriteManager.setSilenceMode(silenceMode);
                 desktopSpriteManager.showDialog("Silence Mode: Off", 1000);
                 Log.w("myApp", "Set silence mode to: " + silenceMode);
+                desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
 
