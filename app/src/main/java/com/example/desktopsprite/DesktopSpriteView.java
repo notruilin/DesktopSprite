@@ -110,19 +110,23 @@ public class DesktopSpriteView extends LinearLayout {
                 if (holding) {
                     holding = false;
                     if (isHorizontalEdge(event.getRawY())) {
+                        desktopSpriteManager.setSilenceMode(2);
                         showHorizontalHide();
                     }
                     else {
                         int verticalEdge = isVerticalEdge(event.getRawX());
                         if (verticalEdge == 0) {
+                            desktopSpriteManager.setSilenceMode(2);
                             playVerticalLeftHide();
                         }
                         else {
                             if (verticalEdge == 1) {
+                                desktopSpriteManager.setSilenceMode(2);
                                 playVerticalRightHide();
                             }
                             else{
                                 fallToGround();
+                                desktopSpriteManager.setSilenceMode(0);
                             }
                         }
                     }

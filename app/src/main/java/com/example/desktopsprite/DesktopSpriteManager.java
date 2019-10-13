@@ -13,6 +13,11 @@ public class DesktopSpriteManager {
     private OptionBarView optionBarView;
     private DialogView dialogView;
 
+    // SilenceMode == 0, no limit
+    // SilenceMode == 1, disable dialog
+    // SilenceMode == 2, disable both dialog, option bar
+    private int silenceMode = 0;
+
     public void showSprite(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         spriteView = new DesktopSpriteView(context, this);
@@ -62,6 +67,7 @@ public class DesktopSpriteManager {
     }
 
     public void showOptionBar(int duration) {
+        if (silenceMode == 2)    return;
         spriteView.optionBarShowing = true;
         optionBarView.setVisibility(View.VISIBLE);
 
@@ -75,6 +81,7 @@ public class DesktopSpriteManager {
     }
 
     public void showDialog(String txt, int duration) {
+        if (silenceMode >= 1)    return;
         dialogView.setTxt(txt);
         dialogView.setVisibility(View.VISIBLE);
 
@@ -84,6 +91,14 @@ public class DesktopSpriteManager {
                 dialogView.setVisibility(View.GONE);
             }
         }, duration);
+    }
+
+    public void setSilenceMode(int silenceMode) {
+        this.silenceMode = silenceMode;
+    }
+
+    public int getSilenceMode() {
+        return silenceMode;
     }
 
     public void setBarViewPosition(int x, int y) {

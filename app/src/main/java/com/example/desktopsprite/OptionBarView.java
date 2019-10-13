@@ -109,7 +109,18 @@ public class OptionBarView extends LinearLayout {
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Stop!");
+                int silenceMode = desktopSpriteManager.getSilenceMode();
+                if (silenceMode == 0)   {
+                    silenceMode = 1;
+                    stopBtn.setBackgroundResource(R.drawable.btn_stop);
+                }
+                else {
+                    silenceMode = 0;
+                    stopBtn.setBackgroundResource(R.drawable.btn_on);
+                }
+                desktopSpriteManager.setSilenceMode(silenceMode);
+                desktopSpriteManager.showDialog("Silence Mode: Off", 1000);
+                Log.w("myApp", "Set silence mode to: " + silenceMode);
             }
         });
 
