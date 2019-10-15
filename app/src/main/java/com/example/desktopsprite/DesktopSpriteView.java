@@ -208,6 +208,7 @@ public class DesktopSpriteView extends LinearLayout {
         imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 1;
         default_when_animation_ends(animationDrawable);
     }
 
@@ -216,6 +217,7 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
         animationDrawable.start();
+        this.current_state = 1;
         default_when_animation_ends(animationDrawable);
     }
 
@@ -260,22 +262,26 @@ public class DesktopSpriteView extends LinearLayout {
 
     void showHolding() {
         imageView.setImageResource(R.drawable.holding);
+        this.current_state = 1;
     }
 
     void showHorizontalHide() {
         imageView.setImageResource(R.drawable.horizontally_embed);
+        this.current_state = 1;
     }
 
     void playVerticalLeftHide() {
         imageView.setImageResource(R.drawable.vertically_embed_left_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 1;
     }
 
     void playVerticalRightHide() {
         imageView.setImageResource(R.drawable.vertically_embed_right_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 1;
     }
 
     void setToDefaultView() {
@@ -284,6 +290,7 @@ public class DesktopSpriteView extends LinearLayout {
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 0;
     }
 
     void setToDefaultViewRightSee(){
