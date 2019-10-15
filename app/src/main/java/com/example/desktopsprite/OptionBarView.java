@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class OptionBarView extends LinearLayout {
 
@@ -43,6 +45,7 @@ public class OptionBarView extends LinearLayout {
         windowManager.updateViewLayout(this, barParams);
     }
 
+
     void setButtonsListeners() {
 
         final Button eatBtn = findViewById(R.id.btn_eat);
@@ -50,6 +53,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Eat!");
+//                desktopSpriteManager.showAlertDialog(getApplicationContext());
                 desktopSpriteManager.feed();
                 // Reset hide duration when click the option bar
                 desktopSpriteManager.showOptionBar(resetDuration);

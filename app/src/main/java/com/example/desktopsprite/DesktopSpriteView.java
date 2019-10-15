@@ -93,8 +93,8 @@ public class DesktopSpriteView extends LinearLayout {
                 spriteX = (int) event.getRawX();
                 spriteY = (int) event.getRawY();
                 int tmp = spriteX+ defaultImageWidth/2;
-                Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString());
-                Log.w("myApp", "down! " + "X: " + ((Integer)tmp).toString());
+//                Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString());
+//                Log.w("myApp", "down! " + "X: " + ((Integer)tmp).toString());
                 if (spriteX <= tmp){
                     setToDefaultView();
                 }else{

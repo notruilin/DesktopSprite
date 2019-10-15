@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class DesktopSpriteManager {
     private WindowManager windowManager;
@@ -94,6 +96,23 @@ public class DesktopSpriteManager {
             }
         }, duration);
     }
+
+    public void showDialog2(String txt, final int duration) {
+        if (silenceMode >= 1)    return;
+        lastShowDialogTime = System.currentTimeMillis();
+        dialogView.setTxt(txt);
+        dialogView.setVisibility(View.VISIBLE);
+
+        dialogView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // If show dialog again during duration
+                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                dialogView.setVisibility(View.GONE);
+            }
+        }, duration);
+    }
+
 
     public void setSilenceMode(int silenceMode) {
         this.silenceMode = silenceMode;
