@@ -153,7 +153,6 @@ public class DesktopSpriteManager {
         showDialog("The light is " + light + " lx", 3000);
     }
 
-
     public void feed(){
         spriteView.drinkMilk();
     }
@@ -161,6 +160,7 @@ public class DesktopSpriteManager {
 
     public void shower() { spriteView.play_shower();}
 
+    public void sleep() {spriteView.play_aeolian();}
 
     public void checkWeather(){
         LocationGPSManager gpsManager = new LocationGPSManager();

@@ -221,7 +221,7 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
-    public  void  play_shower(){
+    void play_shower(){
         imageView.setImageResource(R.drawable.shower);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
@@ -229,6 +229,32 @@ public class DesktopSpriteView extends LinearLayout {
         this.current_state = 1;
         default_when_animation_ends(animationDrawable);
     }
+
+    void play_aeolian(){
+        imageView.setImageResource(R.drawable.sleep_play_aeolian_bell);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
+        animationDrawable.start();
+        this.current_state = 1;
+        int duration = 0;
+        for(int i=0;i<animationDrawable.getNumberOfFrames();i++){
+            duration += animationDrawable.getDuration(i);
+        }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sleep_after_play_aeolian();
+            }
+        },duration);
+    }
+
+    void sleep_after_play_aeolian(){
+        imageView.setImageResource(R.drawable.sleep);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
 
     void fallToGround() {
         final int[] location = new int[2];

@@ -75,7 +75,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Sleep!");
-                desktopSpriteManager.showDialog("Sleep!", 1000);
+                desktopSpriteManager.sleep();
                 desktopSpriteManager.showOptionBar(resetDuration);
             }
         });
