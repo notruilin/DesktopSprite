@@ -153,9 +153,13 @@ public class DesktopSpriteManager {
         showDialog("The light is " + light + " lx", 3000);
     }
 
+
     public void feed(){
         spriteView.drinkMilk();
     }
+
+
+    public void shower() { spriteView.play_shower();}
 
 
     public void checkWeather(){

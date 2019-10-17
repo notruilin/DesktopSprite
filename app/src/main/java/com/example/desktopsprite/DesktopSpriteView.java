@@ -221,6 +221,15 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
+    public  void  play_shower(){
+        imageView.setImageResource(R.drawable.shower);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
+        animationDrawable.start();
+        this.current_state = 1;
+        default_when_animation_ends(animationDrawable);
+    }
+
     void fallToGround() {
         final int[] location = new int[2];
         imageView.getLocationOnScreen(location);
@@ -317,6 +326,8 @@ public class DesktopSpriteView extends LinearLayout {
             desktopSpriteManager.showOptionBar(5000);
         }
     }
+
+
 
     public boolean play_crawl(boolean crawl_left) {
 
