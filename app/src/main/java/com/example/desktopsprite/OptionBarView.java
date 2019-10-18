@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import java.util.Arrays;
+
 public class OptionBarView extends LinearLayout {
 
     private Context context;
@@ -84,8 +86,8 @@ public class OptionBarView extends LinearLayout {
         outBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Weather!");
-                desktopSpriteManager.checkWeather();
+                double[] location = desktopSpriteManager.checkWeather();
+                Log.w("myApp", "Weather!"+Arrays.toString(location));
                 desktopSpriteManager.showOptionBar(resetDuration);
             }
         });

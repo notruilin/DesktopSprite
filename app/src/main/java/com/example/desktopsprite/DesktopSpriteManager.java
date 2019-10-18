@@ -162,10 +162,11 @@ public class DesktopSpriteManager {
 
     public void sleep() {spriteView.play_aeolian();}
 
-    public void checkWeather(){
+    public double[] checkWeather(){
         LocationGPSManager gpsManager = new LocationGPSManager();
         double[] location = gpsManager.getLocation();
-
+        Log.w("weather", "checkWeather: "+location.toString());
+        return location;
     }
 
 
