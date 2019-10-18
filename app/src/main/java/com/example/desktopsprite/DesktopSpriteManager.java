@@ -3,12 +3,21 @@ package com.example.desktopsprite;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
 
 public class DesktopSpriteManager {
     private WindowManager windowManager;
@@ -68,6 +77,7 @@ public class DesktopSpriteManager {
         if (silenceMode == 2)    return;
         lastShowOptionBarTime = System.currentTimeMillis();
         spriteView.optionBarShowing = true;
+
         optionBarView.setVisibility(View.VISIBLE);
 
         optionBarView.postDelayed(new Runnable() {
@@ -162,14 +172,6 @@ public class DesktopSpriteManager {
 
     public void sleep() {spriteView.play_aeolian();}
 
-    public double[] checkWeather(){
-        LocationGPSManager gpsManager = new LocationGPSManager();
-        double[] location = gpsManager.getLocation();
-        Log.w("weather", "checkWeather: "+location.toString());
-        return location;
-    }
-
-
     public void startVomit() {
         spriteView.playVomitAnim();
     }
@@ -181,4 +183,69 @@ public class DesktopSpriteManager {
 
         return true;
     }
+
+    public void showWeather(String str){
+        Log.w("myApp", "Have get Weather"+str);
+
+    }
+
+    // Just example, can delete
+    public void getLocation() {
+
+        //稍后删除
+        spriteView.setCurrent_state(1);
+
+        LocationGPSManager locationGPSManager = new LocationGPSManager();
+        double[] location = locationGPSManager.getLocation();
+        Log.w("myApp", "longitude: " + location[0] + " latitude: " + location[1]);
+        new GetData().execute("Melbourne");
+    }
+
+    class GetData extends AsyncTask<String,Integer,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            String result = "";
+            HttpURLConnection conn = null;
+            try {
+                URL url = new URL("https://api.openweathermap.org/data/2.5/weather?q="+ URLEncoder.encode(params[0], "UTF-8")+"&APPID=a8545160b5cc4954f46ca20570aef7a6");
+                conn = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(conn.getInputStream());
+                if (in != null) {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                    String line = "";
+
+                    while ((line = bufferedReader.readLine()) != null)
+                        result += line;
+                }
+                in.close();
+                return result;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            finally {
+                if(conn!=null)
+                    conn.disconnect();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progresses) {
+            Log.w("myApp", "on progress");
+            showDialog("Searching for Weather...",1000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            showWeather(result);
+        }
+
+    }
+
+
+
 }

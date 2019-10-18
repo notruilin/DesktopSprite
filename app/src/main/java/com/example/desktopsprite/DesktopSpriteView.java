@@ -404,4 +404,8 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
         return true;
     }
+
+    public void setCurrent_state(int i){
+        this.current_state = i;
+    }
 }

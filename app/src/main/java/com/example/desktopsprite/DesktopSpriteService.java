@@ -2,13 +2,16 @@ package com.example.desktopsprite;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class DesktopSpriteService extends Service {
 
@@ -94,11 +97,6 @@ public class DesktopSpriteService extends Service {
         spriteManager.startVomit();
     }
 
-    // Just example, can delete
-    public void testGetLocation() {
-        double[] location = locationGPSManager.getLocation();
-        Log.w("myApp", "longitude: " + location[0] + " latitude: " + location[1]);
-    }
 
     class RefreshTask extends TimerTask {
 
@@ -110,7 +108,6 @@ public class DesktopSpriteService extends Service {
             handler.sendMessage(message);
             //spriteManager.random_crawl();
         }
-
     }
 
 

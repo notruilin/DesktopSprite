@@ -11,6 +11,8 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.List;
+
 public class LocationGPSManager implements LocationListener {
 
     private LocationManager locationManager;
@@ -53,4 +55,8 @@ public class LocationGPSManager implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
+
+
+
+
 }

@@ -86,9 +86,11 @@ public class OptionBarView extends LinearLayout {
         outBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double[] location = desktopSpriteManager.checkWeather();
-                Log.w("myApp", "Weather!"+Arrays.toString(location));
+                desktopSpriteManager.showDialog("Loading the weather on your location...." , 1000);
+                desktopSpriteManager.getLocation();
+                Log.w("myApp", "Weather!");
                 desktopSpriteManager.showOptionBar(resetDuration);
+
             }
         });
 

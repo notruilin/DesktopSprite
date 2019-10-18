@@ -128,4 +128,6 @@ public class SensorsManager implements SensorEventListener {
         stepCount = (int)event.values[0];
         Log.w("myApp", "Step: " + stepCount);
     }
+
+
 }
