@@ -1,13 +1,19 @@
 package com.example.desktopsprite;
 
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -61,6 +67,7 @@ public class DesktopSpriteManager {
         windowManager.addView(dialogView, dialogParams);
         dialogView.setVisibility(View.INVISIBLE);
     }
+
 
     private WindowManager.LayoutParams setParams(int width, int height) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
@@ -184,24 +191,54 @@ public class DesktopSpriteManager {
         return true;
     }
 
+
     public void showWeather(String str){
         Log.w("myApp", "Have get Weather"+str);
-        spriteView.sleep_after_play_aeolian();
+        String mainWeather = "";
+        String description = "";
+        try {
+            JSONObject json = new JSONObject(str);
+            String data = json.getString("weather");
+            String weather=data.replace("[","").replace("]","");
+            Log.w("myApp", weather);
+            JSONObject json2 = new JSONObject(weather);
+            mainWeather = json2.getString("main");
+            description = json2.getString("description");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(mainWeather.equals("Clear")){
+            Log.w("myApp", description);
+            spriteView.sleep_after_play_aeolian();
+        }
+        else if(mainWeather.equals("Rain")||mainWeather.equals("Snow")||mainWeather.equals("Drizzle")){
+
+        }
+        else if(mainWeather.equals("Thunderstorm")){
+
+        }
+        else if(mainWeather.equals("Clouds")){
+
+        }
+        else{
+
+        }
 
     }
 
 
-
     // Just example, can delete
-    public void getLocation() {
-
-        //稍后删除
+    public void getCurrentLocation() {
         spriteView.setCurrent_state(1);
 
         LocationGPSManager locationGPSManager = new LocationGPSManager();
-        double[] location = locationGPSManager.getLocation();
-        Log.w("myApp", "longitude: " + location[0] + " latitude: " + location[1]);
-        new GetData().execute("Melbourne");
+        double[] current_location  = locationGPSManager.getLocation();
+
+        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
+        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
+
+        double melbLocation[] = {144.96,-37.81};
+        new GetData().execute("lat="+"144.96"+"&lon="+"-37.81");
     }
 
     class GetData extends AsyncTask<String,Integer,String> {
@@ -212,13 +249,14 @@ public class DesktopSpriteManager {
             String result = "";
             HttpURLConnection conn = null;
             try {
-                URL url = new URL("https://api.openweathermap.org/data/2.5/weather?q="+ URLEncoder.encode(params[0], "UTF-8")+"&APPID=a8545160b5cc4954f46ca20570aef7a6");
+                URL url = new URL("https://api.openweathermap.org/data/2.5/weather?lon=144.96&lat=-37.81&APPID=a8545160b5cc4954f46ca20570aef7a6");
+
+//              URL url = new URL("https://api.openweathermap.org/data/2.5/weather?"+ URLEncoder.encode(params[0], "UTF-8")+"&APPID=a8545160b5cc4954f46ca20570aef7a6");
                 conn = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 if (in != null) {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
                     String line = "";
-
                     while ((line = bufferedReader.readLine()) != null)
                         result += line;
                 }

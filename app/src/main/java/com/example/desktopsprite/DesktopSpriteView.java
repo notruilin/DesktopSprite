@@ -353,9 +353,11 @@ public class DesktopSpriteView extends LinearLayout {
     void onDoubleClick() {
         if (optionBarShowing) {
             desktopSpriteManager.hideOptionBar();
+          //  this.current_state =0;
         }
         else {
             desktopSpriteManager.showOptionBar(5000);
+           // this.current_state = 1;
         }
     }
 
