@@ -255,6 +255,12 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.start();
     }
 
+    void play_sunny(){
+        imageView.setImageResource(R.drawable.sun_beach);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
 
     void fallToGround() {
         final int[] location = new int[2];

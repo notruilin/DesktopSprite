@@ -186,8 +186,11 @@ public class DesktopSpriteManager {
 
     public void showWeather(String str){
         Log.w("myApp", "Have get Weather"+str);
+        spriteView.sleep_after_play_aeolian();
 
     }
+
+
 
     // Just example, can delete
     public void getLocation() {
@@ -242,6 +245,7 @@ public class DesktopSpriteManager {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             showWeather(result);
+
         }
 
     }
