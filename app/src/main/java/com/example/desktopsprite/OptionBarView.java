@@ -100,7 +100,9 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Go Home!");
                 desktopSpriteManager.showDialog("Go Home!", 1000);
+                desktopSpriteManager.backHome();
                 desktopSpriteManager.showOptionBar(resetDuration);
+
             }
         });
 

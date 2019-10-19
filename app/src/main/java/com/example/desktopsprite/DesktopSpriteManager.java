@@ -288,6 +288,10 @@ public class DesktopSpriteManager {
 
     }
 
+    public void backHome(){
+        spriteView.setToDefaultView();
+    }
+
 
 
 }
