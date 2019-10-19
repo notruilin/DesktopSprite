@@ -58,7 +58,7 @@ public class DesktopSpriteService extends Service {
             if (sensorsManager == null)
                 sensorsManager = new SensorsManager(this);
             if (locationGPSManager == null)
-                locationGPSManager = new LocationGPSManager();
+                locationGPSManager = new LocationGPSManager(this);
             spriteExist = true;
             spriteManager = new DesktopSpriteManager();
             spriteManager.showSprite(getApplicationContext());
@@ -96,6 +96,14 @@ public class DesktopSpriteService extends Service {
         Log.w("myApp", "Keep Shaking!!!!!!!!!!!!!!!!!");
         spriteManager.startVomit();
     }
+
+
+    //test
+//    public void getLocation() {
+//        double[] current_location = locationGPSManager.getI;
+//        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
+//
+//    }
 
 
     class RefreshTask extends TimerTask {

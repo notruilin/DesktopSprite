@@ -98,6 +98,7 @@ public class OptionBarView extends LinearLayout {
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Log.w("myApp", "Go Home!");
                 desktopSpriteManager.showDialog("Go Home!", 1000);
                 desktopSpriteManager.backHome();

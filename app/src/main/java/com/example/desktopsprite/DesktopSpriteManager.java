@@ -31,6 +31,7 @@ public class DesktopSpriteManager {
     private OptionBarView optionBarView;
     private DialogView dialogView;
 
+
     private long lastShowOptionBarTime;
     private long lastShowDialogTime;
 
@@ -229,16 +230,11 @@ public class DesktopSpriteManager {
 
     // Just example, can delete
     public void getCurrentLocation() {
-        spriteView.setCurrent_state(1);
 
-        LocationGPSManager locationGPSManager = new LocationGPSManager();
-        double[] current_location  = locationGPSManager.getLocation();
+        double locationNow[] = LocationGPSManager.getInstance().getLocation();
+        Log.w("myApp", "lat="+locationNow[0]+"&lon="+locationNow[1]);
 
-        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
-        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
-
-        double melbLocation[] = {144.96,-37.81};
-        new GetData().execute("lat="+"144.96"+"&lon="+"-37.81");
+        new GetData().execute("lat="+locationNow[0]+"&lon="+locationNow[1]);
     }
 
     class GetData extends AsyncTask<String,Integer,String> {

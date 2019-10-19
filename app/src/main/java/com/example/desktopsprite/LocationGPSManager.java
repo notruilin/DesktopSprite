@@ -16,11 +16,21 @@ import java.util.List;
 
 public class LocationGPSManager implements LocationListener {
 
+    final private DesktopSpriteService desktopSpriteService;
     private LocationManager locationManager;
+    private static LocationGPSManager instance;
+
 
     private double longitude = -1, latitude = -1;
 
-    public LocationGPSManager() {
+    public static LocationGPSManager getInstance() {
+        return instance;
+    }
+
+
+    public LocationGPSManager(DesktopSpriteService desktopSpriteService) {
+        instance = this;
+        this.desktopSpriteService = desktopSpriteService;
         locationManager = (LocationManager) MainActivity.getInstance().getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(MainActivity.getInstance(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.getInstance(), new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 200);
