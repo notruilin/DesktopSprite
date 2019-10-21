@@ -180,6 +180,7 @@ public class DesktopSpriteView extends LinearLayout {
         desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
         // Move the dialog with the sprite
         moveDialogWithSprite(spriteParams.x, spriteParams.y);
+        moveAlertDialogWithSprite(spriteParams.x,spriteParams.y);
     }
 
     void setSpritePosition(int x, int y) {
@@ -192,6 +193,7 @@ public class DesktopSpriteView extends LinearLayout {
         desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
         // Move the dialog with the sprite
         moveDialogWithSprite(spriteParams.x, spriteParams.y);
+        moveAlertDialogWithSprite(spriteParams.x,spriteParams.y);
     }
 
     void moveDialogWithSprite(int x, int y) {
@@ -204,9 +206,28 @@ public class DesktopSpriteView extends LinearLayout {
         desktopSpriteManager.setDialogViewPosition(x + toRight, y, left);
     }
 
+    void moveAlertDialogWithSprite(int x, int y) {
+        boolean left = true;
+        int toRight = 0;
+        if (x < screenWidth/2) {
+            left = false;
+            toRight = defaultImageWidth;
+        }
+        desktopSpriteManager.setAlertDialogViewPosition(x + toRight, y, left);
+    }
+
     void playVomitAnim() {
         imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state = 1;
+        default_when_animation_ends(animationDrawable);
+    }
+
+    void eatComplementary(){
+        imageView.setImageResource(R.drawable.feed_complementary);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.setOneShot(true);
         animationDrawable.start();
         this.current_state = 1;
         default_when_animation_ends(animationDrawable);

@@ -30,6 +30,7 @@ public class DesktopSpriteManager {
     private DesktopSpriteView spriteView;
     private OptionBarView optionBarView;
     private DialogView dialogView;
+    private AlertDialogView alertDialogView;
 
 
     private long lastShowOptionBarTime;
@@ -39,6 +40,9 @@ public class DesktopSpriteManager {
     // SilenceMode == 1, disable dialog
     // SilenceMode == 2, disable both dialog, option bar
     private int silenceMode = 0;
+
+    private int response_from_alert_dialog = 1;
+    private boolean if_response = false;
 
     public void showSprite(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -69,6 +73,14 @@ public class DesktopSpriteManager {
         dialogView.setVisibility(View.INVISIBLE);
     }
 
+    public void createAlertDialog(Context context) {
+        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        alertDialogView = new AlertDialogView(context, this);
+        WindowManager.LayoutParams alertDialogParams = setParams(alertDialogView.dialogWidth, alertDialogView.dialogHeight);
+        alertDialogView.setAlertDialogParams(alertDialogParams);
+        windowManager.addView(alertDialogView, alertDialogParams);
+        alertDialogView.setVisibility(View.INVISIBLE);
+    }
 
     private WindowManager.LayoutParams setParams(int width, int height) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
@@ -115,6 +127,24 @@ public class DesktopSpriteManager {
         }, duration);
     }
 
+    public void showAlertDialog(String txt1, String txt2, String txt3, final int duration) {
+        if (silenceMode >= 1)    return;
+        lastShowDialogTime = System.currentTimeMillis();
+        alertDialogView.setTxt(txt1);
+        alertDialogView.setVisibility(View.VISIBLE);
+
+        alertDialogView.setFirstButton(txt2);
+        alertDialogView.setSecondButton(txt3);
+        alertDialogView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // If show dialog again during duration
+                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                alertDialogView.setVisibility(View.GONE);
+            }
+        }, duration);
+    }
+
     public void showDialog2(String txt, final int duration) {
         if (silenceMode >= 1)    return;
         lastShowDialogTime = System.currentTimeMillis();
@@ -149,9 +179,17 @@ public class DesktopSpriteManager {
         dialogView.setPosition(x, y, left);
     }
 
+    public void setAlertDialogViewPosition(int x, int y, boolean left){
+        alertDialogView.setPosition(x, y, left);
+    }
+
     public void hideOptionBar() {
         spriteView.optionBarShowing = false;
         optionBarView.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideAlertDialogView(){
+        alertDialogView.setVisibility(View.INVISIBLE);
     }
 
     public void destroySprite() {
@@ -171,10 +209,13 @@ public class DesktopSpriteManager {
         showDialog("The light is " + light + " lx", 3000);
     }
 
-    public void feed(){
+    public void feed_milk(){
         spriteView.drinkMilk();
     }
 
+    public void feed_complementary(){
+        spriteView.eatComplementary();
+    }
 
     public void shower() { spriteView.play_shower();}
 
@@ -213,17 +254,18 @@ public class DesktopSpriteManager {
             spriteView.sleep_after_play_aeolian();
         }
         else if(mainWeather.equals("Rain")||mainWeather.equals("Snow")||mainWeather.equals("Drizzle")){
-
+            Log.w("myApp", description);
+            spriteView.sleep_after_play_aeolian();
         }
         else if(mainWeather.equals("Thunderstorm")){
-
+            Log.w("myApp", description);
+            spriteView.sleep_after_play_aeolian();
         }
         else if(mainWeather.equals("Clouds")){
             Log.w("myApp", description);
             spriteView.sleep_after_play_aeolian();
         }
         else{
-
         }
 
     }
@@ -295,6 +337,26 @@ public class DesktopSpriteManager {
         int steps  = SensorsManager.getInstance().getStepCounter();
         return steps;
 
+    }
+
+    public void setResponse(int response) {
+        this.response_from_alert_dialog = response;
+    }
+
+    public int getResponse(){
+        return this.response_from_alert_dialog;
+    }
+
+//    public void set_if_response(boolean boo){
+//        this.if_response = boo;
+//    }
+//
+//    public boolean get_if_response(){
+//        return if_response;
+//    }
+
+    public void showDefault(){
+        spriteView.setToDefaultView();
     }
 
 

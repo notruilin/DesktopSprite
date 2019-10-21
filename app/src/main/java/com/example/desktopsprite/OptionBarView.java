@@ -1,6 +1,7 @@
 package com.example.desktopsprite;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class OptionBarView extends LinearLayout {
 
@@ -18,6 +21,8 @@ public class OptionBarView extends LinearLayout {
     private DesktopSpriteManager desktopSpriteManager;
     private final WindowManager windowManager;
     private WindowManager.LayoutParams barParams;
+    private int runCount = 0 ;
+
 
     public int barWidth, barHeight;
 
@@ -47,14 +52,38 @@ public class OptionBarView extends LinearLayout {
 
 
     void setButtonsListeners() {
-
         final Button eatBtn = findViewById(R.id.btn_eat);
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Eat!");
+
+                runCount =0;
+                Log.w("myApp", "Eat!"+runCount);
 //                desktopSpriteManager.showAlertDialog(getApplicationContext());
-                desktopSpriteManager.feed();
+
+                desktopSpriteManager.showAlertDialog("Complementary or Milk?","Complementary","Milk",4000);
+                final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+
+                    @Override
+                    public void run() {
+                        //
+                        if (runCount == 1) {// 第一次执行则关闭定时执行操作
+                            // 在此处添加执行的代码
+                            if (desktopSpriteManager.getResponse()==2){
+                                desktopSpriteManager.feed_milk();
+                                desktopSpriteManager.setResponse(1);
+                            }else{
+                                desktopSpriteManager.feed_complementary();
+                            }
+                            handler.removeCallbacks(this);
+                        }
+                        handler.postDelayed(this, 2000);
+                        runCount++;
+                    }
+                };
+                handler.postDelayed(runnable, 2000);// 打开定时器，执行操作
+
                 // Reset hide duration when click the option bar
                 desktopSpriteManager.hideOptionBar();
             }
@@ -121,7 +150,7 @@ public class OptionBarView extends LinearLayout {
             public void onClick(View v) {
                 Log.w("myApp", "Step!");
                 int steps = desktopSpriteManager.getSteps();
-                desktopSpriteManager.showDialog("Your Steps Today: \n" + steps, 1000);
+                desktopSpriteManager.showDialog("Your Steps Today: \n" + steps, 2000);
                 desktopSpriteManager.hideOptionBar();
             }
         });
@@ -154,4 +183,6 @@ public class OptionBarView extends LinearLayout {
             }
         });
     }
+
+
 }

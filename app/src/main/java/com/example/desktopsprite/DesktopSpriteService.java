@@ -64,6 +64,7 @@ public class DesktopSpriteService extends Service {
             spriteManager.showSprite(getApplicationContext());
             spriteManager.createOptionBar(getApplicationContext());
             spriteManager.createDialog(getApplicationContext());
+            spriteManager.createAlertDialog(getApplicationContext());
         }
         else {
             spriteExist = false;

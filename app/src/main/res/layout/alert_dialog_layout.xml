@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alert_dialog_layout"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle">
+
+
+    <TextView
+        android:id="@+id/alert_dialog_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Hello world!"
+        android:gravity="center"
+        android:textColor="#000000"
+        tools:visibility="visible"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+    <RadioButton
+        android:id="@+id/alert_dialog_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:text="Button"
+        android:clickable="true"
+        android:checked="true"
+        tools:visibility="visible"/>
+
+    <RadioButton
+        android:id="@+id/alert_dialog_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:text="Button"
+        android:clickable="true"
+        android:checked="false"
+        tools:visibility="visible"/>
+
+    </RadioGroup>
+
+</LinearLayout>
