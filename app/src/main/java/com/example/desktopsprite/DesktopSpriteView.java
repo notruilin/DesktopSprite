@@ -264,6 +264,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void fallToGround() {
         final int[] location = new int[2];
+        this.current_state = 1;
         imageView.getLocationOnScreen(location);
         imageView.setImageResource(R.drawable.free_fall);
         ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defaultImageHeight - statusBarHeight);
