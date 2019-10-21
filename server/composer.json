@@ -1,0 +1,14 @@
+{
+    "name": "yanjianyu/mobile",
+    "description": "mobile",
+    "authors": [
+        {
+            "name": "jianyuy2",
+            "email": "jianyuy2@student.unimelb.edu.au"
+        }
+    ],
+    "require": {
+        "google/apiclient": "2.0",
+        "phpmailer/phpmailer": "^6.0"
+    }
+}
