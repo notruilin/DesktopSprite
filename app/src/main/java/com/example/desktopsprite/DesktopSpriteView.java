@@ -264,6 +264,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     void fallToGround() {
         final int[] location = new int[2];
+        this.current_state = 1;
         imageView.getLocationOnScreen(location);
         imageView.setImageResource(R.drawable.free_fall);
         ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defaultImageHeight - statusBarHeight);
@@ -353,9 +354,11 @@ public class DesktopSpriteView extends LinearLayout {
     void onDoubleClick() {
         if (optionBarShowing) {
             desktopSpriteManager.hideOptionBar();
+          //  this.current_state =0;
         }
         else {
             desktopSpriteManager.showOptionBar(5000);
+           // this.current_state = 1;
         }
     }
 
