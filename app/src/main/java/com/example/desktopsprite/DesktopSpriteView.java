@@ -368,31 +368,27 @@ public class DesktopSpriteView extends LinearLayout {
             return false;
         }
 
-
         int dx = 200;
         int dy = 0;
 
-//        if (crawl_left){
-//            dx = -1 * dx;
-//        }
-
-
-
+        if (crawl_left){
+            dx = -1 * dx;
+        }
 
         int duration = 1500;
 //        ObjectAnimator.ofFloat(imageView,"translationX",spriteX,200F).setDuration(duration).start();
 
-        int[] location = new int[2];
-        imageView.getLocationOnScreen(location);
-        spriteX = location[0];
-        spriteY = location[1];
-        ValueAnimator animator = ValueAnimator.ofFloat(spriteX, spriteX+dx).setDuration(duration);
+
+        Log.w("WY", "spriteX = " +spriteParams.x);
+        Log.w("WY", "spriteY = " + spriteParams.y);
+        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x+dx).setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setSpritePosition((int)(float)animation.getAnimatedValue(),spriteY);
+                setSpritePosition((int)(float)animation.getAnimatedValue(),spriteParams.y);
             }
         });
+
         animator.start();
 
         imageView.setImageResource(R.drawable.crawl_anim);
@@ -400,13 +396,7 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.setOneShot(true);
         animationDrawable.start();
 
-//        TranslateAnimation animation = new TranslateAnimation(spriteX,dx,spriteY,dy);
-//        updateSpritePosition(dx, dy);
-//        TranslateAnimation animation = new TranslateAnimation(  Animation.ABSOLUTE,spriteX,
-//                                                                Animation.ABSOLUTE,100f,
-//                                                                Animation.ABSOLUTE,spriteY,
-//                                                                Animation.ABSOLUTE, 0f);
-//        imageView.startAnimation(animation);
+
         default_when_animation_ends(animationDrawable);
         return true;
     }
