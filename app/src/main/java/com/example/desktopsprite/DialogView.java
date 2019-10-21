@@ -45,4 +45,5 @@ public class DialogView extends LinearLayout {
         dialogParams.y = y + 300;
         windowManager.updateViewLayout(this, dialogParams);
     }
+
 }

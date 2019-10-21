@@ -219,7 +219,8 @@ public class DesktopSpriteManager {
 
         }
         else if(mainWeather.equals("Clouds")){
-
+            Log.w("myApp", description);
+            spriteView.sleep_after_play_aeolian();
         }
         else{
 
@@ -228,7 +229,6 @@ public class DesktopSpriteManager {
     }
 
 
-    // Just example, can delete
     public void getCurrentLocation() {
 
         double locationNow[] = LocationGPSManager.getInstance().getLocation();
@@ -237,6 +237,8 @@ public class DesktopSpriteManager {
         new GetData().execute("lat="+locationNow[0]+"&lon="+locationNow[1]);
     }
 
+
+    //get weather data
     class GetData extends AsyncTask<String,Integer,String> {
 
         @Override
@@ -286,6 +288,13 @@ public class DesktopSpriteManager {
 
     public void backHome(){
         spriteView.setToDefaultView();
+    }
+
+
+    public int getSteps() {
+        int steps  = SensorsManager.getInstance().getStepCounter();
+        return steps;
+
     }
 
 

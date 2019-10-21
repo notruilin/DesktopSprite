@@ -120,7 +120,8 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Step!");
-                desktopSpriteManager.showDialog("Step Step Step Step Step Step Step Step Step", 1000);
+                int steps = desktopSpriteManager.getSteps();
+                desktopSpriteManager.showDialog("Your Steps Today: \n" + steps, 1000);
                 desktopSpriteManager.hideOptionBar();
             }
         });

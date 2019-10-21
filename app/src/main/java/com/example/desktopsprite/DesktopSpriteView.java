@@ -253,6 +253,8 @@ public class DesktopSpriteView extends LinearLayout {
         imageView.setImageResource(R.drawable.sleep);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 1;
+
     }
 
     void play_sunny(){
