@@ -11,7 +11,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="30dp">
 
         <Switch
             android:layout_width="match_parent"
@@ -19,12 +21,16 @@
             android:text="show clock alarm" />
 
         <Switch
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="show weather" />
 
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/btn_save_setting"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="80dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Save setting" />
     </LinearLayout>

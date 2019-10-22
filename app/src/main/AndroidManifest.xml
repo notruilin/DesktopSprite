@@ -35,6 +35,10 @@
             android:name=".DesktopSpriteService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <receiver
+            android:name=".ui.notifications.AlarmBroadcast"
+            android:process=":remote" />
     </application>
 
 </manifest>
