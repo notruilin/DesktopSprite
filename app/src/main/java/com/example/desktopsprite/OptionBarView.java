@@ -58,35 +58,10 @@ public class OptionBarView extends LinearLayout {
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                runCount =0;
                 Log.w("myApp", "Eat!"+runCount);
 //                desktopSpriteManager.showAlertDialog(getApplicationContext());
-
-                desktopSpriteManager.showAlertDialog("Complementary or Milk?","Complementary","Milk",4000);
-                final Handler handler = new Handler();
-                    Runnable runnable = new Runnable() {
-
-                    @Override
-                    public void run() {
-                        //
-                        if (runCount == 1) {// 第一次执行则关闭定时执行操作
-                            // 在此处添加执行的代码
-                            if (desktopSpriteManager.getResponse()==2){
-                                desktopSpriteManager.feed_milk();
-                                desktopSpriteManager.setResponse(1);
-                            }else{
-                                desktopSpriteManager.feed_complementary();
-                            }
-                            handler.removeCallbacks(this);
-                        }
-                        handler.postDelayed(this, 2000);
-                        runCount++;
-                    }
-                };
-                handler.postDelayed(runnable, 2000);// 打开定时器，执行操作
-
-                // Reset hide duration when click the option bar
+                desktopSpriteManager.setQuestionNumber(1);
+                desktopSpriteManager.showOptionDialog("Complementary or Milk?","Complementary","Milk",4000);
                 desktopSpriteManager.hideOptionBar();
             }
         });
@@ -116,6 +91,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 desktopSpriteManager.showDialog("Loading the weather on your location...." , 1000);
+                desktopSpriteManager.setQuestionNumber(4);
                 desktopSpriteManager.getCurrentLocation();
                 Log.w("myApp", "Weather!");
                 desktopSpriteManager.hideOptionBar();

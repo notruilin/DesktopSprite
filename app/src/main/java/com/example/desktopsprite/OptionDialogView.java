@@ -1,7 +1,6 @@
 package com.example.desktopsprite;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 
 
-public class AlertDialogView extends LinearLayout{
+public class OptionDialogView extends LinearLayout{
 
     private Context context;
 
@@ -21,19 +20,19 @@ public class AlertDialogView extends LinearLayout{
 
     public int dialogWidth, dialogHeight;
 
-    public AlertDialogView(Context context, DesktopSpriteManager desktopSpriteManager) {
+    public OptionDialogView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
         this.context = context;
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.option_dialog_layout, this);
 
-        LinearLayout view = findViewById(R.id.alert_dialog_layout);
+        LinearLayout view = findViewById(R.id.option_dialog_layout);
         dialogWidth = view.getLayoutParams().width;
         dialogHeight = view.getLayoutParams().height;
     }
 
-    public void setAlertDialogParams(WindowManager.LayoutParams dialogParams) {
+    public void setOptionDialogParams(WindowManager.LayoutParams dialogParams) {
         this.dialogParams = dialogParams;
     }
 
@@ -47,7 +46,14 @@ public class AlertDialogView extends LinearLayout{
         button.setText(txt);
         button.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                desktopSpriteManager.setResponse(1);
+
+                desktopSpriteManager.hideOptionDialogView();
+                int q = desktopSpriteManager.getQuestionNumber();
+                if (q==4){
+                    desktopSpriteManager.showActionOnWeather();
+                }else if (q==1){
+                    desktopSpriteManager.feed_complementary();
+                }else{ }
             }
         });
     }
@@ -57,7 +63,13 @@ public class AlertDialogView extends LinearLayout{
         button.setText(txt);
         button.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                desktopSpriteManager.setResponse(2);
+                desktopSpriteManager.hideOptionDialogView();
+                int q = desktopSpriteManager.getQuestionNumber();
+                if (q==4){
+                    desktopSpriteManager.setBabyDeaultView();
+                }else if (q==1){
+                    desktopSpriteManager.feed_milk();
+                }else{ }
             }
         });
     }

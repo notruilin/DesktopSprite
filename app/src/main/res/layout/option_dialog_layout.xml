@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/alert_dialog_layout"
+    android:id="@+id/option_dialog_layout"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -18,32 +18,30 @@
         android:textColor="#000000"
         tools:visibility="visible"/>
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
 
-    <RadioButton
+    <Button
         android:id="@+id/alert_dialog_button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="#000000"
+        style="?android:attr/borderlessButtonStyle"
+        android:gravity="left"
+        android:textColor="#f18658"
         android:text="Button"
         android:clickable="true"
-        android:checked="true"
         tools:visibility="visible"/>
 
-    <RadioButton
+    <Button
         android:id="@+id/alert_dialog_button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="#000000"
+        style="?android:attr/borderlessButtonStyle"
+        android:gravity="left"
+        android:textColor="#f18658"
         android:text="Button"
         android:clickable="true"
-        android:checked="false"
+
         tools:visibility="visible"/>
 
-    </RadioGroup>
+
 
 </LinearLayout>

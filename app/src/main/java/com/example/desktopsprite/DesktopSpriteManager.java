@@ -31,7 +31,7 @@ public class DesktopSpriteManager {
     private DesktopSpriteView spriteView;
     private OptionBarView optionBarView;
     private DialogView dialogView;
-    private AlertDialogView alertDialogView;
+    private OptionDialogView optionDialogView;
 
 
     private long lastShowOptionBarTime;
@@ -44,6 +44,8 @@ public class DesktopSpriteManager {
 
     private int response_from_alert_dialog = 1;
     private boolean if_response = false;
+    private int questionNumber = 0;
+    private String weather = "Clear";
 
     Context context;
 
@@ -77,13 +79,13 @@ public class DesktopSpriteManager {
         dialogView.setVisibility(View.INVISIBLE);
     }
 
-    public void createAlertDialog(Context context) {
+    public void createOptionDialog(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        alertDialogView = new AlertDialogView(context, this);
-        WindowManager.LayoutParams alertDialogParams = setParams(alertDialogView.dialogWidth, alertDialogView.dialogHeight);
-        alertDialogView.setAlertDialogParams(alertDialogParams);
-        windowManager.addView(alertDialogView, alertDialogParams);
-        alertDialogView.setVisibility(View.INVISIBLE);
+        optionDialogView = new OptionDialogView(context, this);
+        WindowManager.LayoutParams alertDialogParams = setParams(optionDialogView.dialogWidth, optionDialogView.dialogHeight);
+        optionDialogView.setOptionDialogParams(alertDialogParams);
+        windowManager.addView(optionDialogView, alertDialogParams);
+        optionDialogView.setVisibility(View.INVISIBLE);
     }
 
     private WindowManager.LayoutParams setParams(int width, int height) {
@@ -131,20 +133,20 @@ public class DesktopSpriteManager {
         }, duration);
     }
 
-    public void showAlertDialog(String txt1, String txt2, String txt3, final int duration) {
+    public void showOptionDialog(String txt1, String txt2, String txt3, final int duration) {
         if (silenceMode >= 1)    return;
         lastShowDialogTime = System.currentTimeMillis();
-        alertDialogView.setTxt(txt1);
-        alertDialogView.setVisibility(View.VISIBLE);
+        optionDialogView.setTxt(txt1);
+        optionDialogView.setVisibility(View.VISIBLE);
 
-        alertDialogView.setFirstButton(txt2);
-        alertDialogView.setSecondButton(txt3);
-        alertDialogView.postDelayed(new Runnable() {
+        optionDialogView.setFirstButton(txt2);
+        optionDialogView.setSecondButton(txt3);
+        optionDialogView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // If show dialog again during duration
                 if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
-                alertDialogView.setVisibility(View.GONE);
+                optionDialogView.setVisibility(View.GONE);
             }
         }, duration);
     }
@@ -184,7 +186,7 @@ public class DesktopSpriteManager {
     }
 
     public void setAlertDialogViewPosition(int x, int y, boolean left){
-        alertDialogView.setPosition(x, y, left);
+        optionDialogView.setPosition(x, y, left);
     }
 
     public void hideOptionBar() {
@@ -192,8 +194,12 @@ public class DesktopSpriteManager {
         optionBarView.setVisibility(View.INVISIBLE);
     }
 
-    public void hideAlertDialogView(){
-        alertDialogView.setVisibility(View.INVISIBLE);
+    public void hideDialogView(){
+        dialogView.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideOptionDialogView(){
+        optionDialogView.setVisibility(View.INVISIBLE);
     }
 
     public void destroySprite() {
@@ -250,26 +256,38 @@ public class DesktopSpriteManager {
             JSONObject json2 = new JSONObject(weather);
             mainWeather = json2.getString("main");
             description = json2.getString("description");
+            this.weather = mainWeather;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         if(mainWeather.equals("Clear")){
             Log.w("myApp", description);
+            //for test
+            hideDialogView();
             spriteView.sleep_after_play_aeolian();
+            showOptionDialog(description+" now", "set a beach background", "cancel", 4000);
         }
-        else if(mainWeather.equals("Rain")||mainWeather.equals("Snow")||mainWeather.equals("Drizzle")){
+        else if(mainWeather.equals("Rain")||mainWeather.equals("Snow")||mainWeather.equals("Drizzle")||mainWeather.equals("Clouds")){
             Log.w("myApp", description);
+            hideDialogView();
+
             spriteView.sleep_after_play_aeolian();
+
+            showOptionDialog(description+" now", "give baby an umbrella", "cancel", 4000);
+
         }
         else if(mainWeather.equals("Thunderstorm")){
             Log.w("myApp", description);
+            hideDialogView();
+
+            //for test
             spriteView.sleep_after_play_aeolian();
+
+            showOptionDialog(description+" now", "give baby an earphone", "cancel", 4000);
+
         }
-        else if(mainWeather.equals("Clouds")){
-            Log.w("myApp", description);
-            spriteView.sleep_after_play_aeolian();
-        }
-        else{
+        else{            hideDialogView();
         }
 
     }
@@ -368,4 +386,65 @@ public class DesktopSpriteManager {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public void setQuestionNumber(int i){
+        this.questionNumber = i;
+    }
+
+    public int getQuestionNumber(){
+        return this.questionNumber;
+    }
+
+    public void showActionOnWeather(){
+        if(this.weather.equals("Clear")){
+            spriteView.play_shower();
+            showDialog("Playing on beach!",2000);
+        }
+        else if(this.weather.equals("Rain")||this.weather.equals("Snow")||this.weather.equals("Drizzle")||this.weather.equals("Clouds")){
+            spriteView.play_shower();
+            showDialog("Lovely Umbrella!",2000);
+
+        }
+        else if(this.weather.equals("Thunderstorm")){
+            spriteView.play_shower();
+            showDialog("Wonderful Songs!",2000);
+
+        }
+        else{ }
+    }
+
+    public void setBabyDeaultView(){
+        spriteView.setToDefaultView();
+    }
+
+
+//    public void showAlterDialog(Context context){
+//        final AlertDialog.Builder alterDiaglog = new AlertDialog.Builder(context);
+////        alterDiaglog.setIcon(R.drawable.icon);//图标
+//        alterDiaglog.setTitle("简单的dialog");//文字
+//        alterDiaglog.setMessage("生存还是死亡");//提示消息
+//        //积极的选择
+//        alterDiaglog.setPositiveButton("生存", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//        //消极的选择
+//        alterDiaglog.setNegativeButton("死亡", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//        //中立的选择
+//        alterDiaglog.setNeutralButton("不生不死", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//
+//        //显示
+//        alterDiaglog.show();
+//    }
+
+
 }
