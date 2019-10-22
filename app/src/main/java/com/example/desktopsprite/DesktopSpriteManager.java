@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -44,7 +45,10 @@ public class DesktopSpriteManager {
     private int response_from_alert_dialog = 1;
     private boolean if_response = false;
 
+    Context context;
+
     public void showSprite(Context context) {
+        this.context = context;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         spriteView = new DesktopSpriteView(context, this);
         WindowManager.LayoutParams spriteParams = setParams(spriteView.spriteWidth, spriteView.spriteHeight);
@@ -359,6 +363,9 @@ public class DesktopSpriteManager {
         spriteView.setToDefaultView();
     }
 
-
-
+    public void launchMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

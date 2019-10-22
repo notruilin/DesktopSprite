@@ -1,6 +1,8 @@
 package com.example.desktopsprite;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,6 +182,7 @@ public class OptionBarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "More!");
+                desktopSpriteManager.launchMainActivity();
             }
         });
     }
