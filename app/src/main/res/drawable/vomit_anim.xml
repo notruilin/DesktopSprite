@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
-    <item android:drawable="@drawable/vomit_readyto_0" android:duration="1000"></item>
+    <item android:drawable="@drawable/vomit_readyto_0" android:duration="150"></item>
+    <item android:drawable="@drawable/vomit_readyto_1" android:duration="150"></item>
+    <item android:drawable="@drawable/vomit_readyto_0" android:duration="100"></item>
+    <item android:drawable="@drawable/vomit_readyto_1" android:duration="100"></item>
+    <item android:drawable="@drawable/vomit_readyto_0" android:duration="100"></item>
     <item android:drawable="@drawable/vomit_1" android:duration="100"></item>
     <item android:drawable="@drawable/vomit_2" android:duration="100"></item>
     <item android:drawable="@drawable/vomit_3" android:duration="100"></item>

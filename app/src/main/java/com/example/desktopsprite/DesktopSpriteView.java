@@ -37,7 +37,6 @@ public class DesktopSpriteView extends LinearLayout {
     private WindowManager.LayoutParams spriteParams;
     private AnimationDrawable animationDrawable;
 
-    private Context context;
     private final WindowManager windowManager;
     private DesktopSpriteManager desktopSpriteManager;
 
@@ -51,7 +50,6 @@ public class DesktopSpriteView extends LinearLayout {
 
     public DesktopSpriteView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
-        this.context = context;
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
