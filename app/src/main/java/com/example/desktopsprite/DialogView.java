@@ -57,7 +57,7 @@ public class DialogView extends LinearLayout {
         if (left)   leftSide = - getWidth();
         if (!desktopSpriteManager.spriteShowing())  return;
         dialogParams.x = x + leftSide;
-        dialogParams.y = y + 300;
+        dialogParams.y = y;
         windowManager.updateViewLayout(this, dialogParams);
     }
 }
