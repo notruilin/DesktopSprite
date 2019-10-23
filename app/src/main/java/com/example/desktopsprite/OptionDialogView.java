@@ -1,3 +1,10 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.content.Context;
@@ -8,11 +15,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/*
+ * This class implements the view of the option dialog
+ * It allows to add two options to choose
+ * Including updating positions, updating text
+ */
 
-
-public class OptionDialogView extends LinearLayout{
-
-    private Context context;
+public class OptionDialogView extends LinearLayout {
 
     private DesktopSpriteManager desktopSpriteManager;
     private final WindowManager windowManager;
@@ -22,7 +31,6 @@ public class OptionDialogView extends LinearLayout{
 
     public OptionDialogView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
-        this.context = context;
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.option_dialog_layout, this);
@@ -42,7 +50,7 @@ public class OptionDialogView extends LinearLayout{
     }
 
     public void setFirstButton(String txt){
-        Button button = (Button)findViewById(R.id.alert_dialog_button1);
+        Button button = findViewById(R.id.alert_dialog_button1);
         button.setText(txt);
         button.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
@@ -59,7 +67,7 @@ public class OptionDialogView extends LinearLayout{
     }
 
     public void setSecondButton(String txt){
-        Button button = (Button)findViewById(R.id.alert_dialog_button2);
+        Button button = findViewById(R.id.alert_dialog_button2);
         button.setText(txt);
         button.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
@@ -74,6 +82,12 @@ public class OptionDialogView extends LinearLayout{
         });
     }
 
+    /*
+     * Set the option bar position
+     * @param   x       the x coordinate of sprite (if left == true, left edge, if left == false, right edge)
+     * @param   y       the y coordinate of sprite (top edge)
+     * @param   left    if left == true, show the dialog on the left side of sprite
+     */
     public void setPosition(int x, int y, boolean left) {
         int leftSide = 0;
         if (left)   leftSide = - getWidth();

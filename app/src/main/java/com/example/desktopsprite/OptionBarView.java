@@ -1,36 +1,36 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
+/*
+ * This class implements the view of the option bar
+ * Including button listeners, updating positions
+ */
 
 public class OptionBarView extends LinearLayout {
 
-    private Context context;
     private DesktopSpriteManager desktopSpriteManager;
     private final WindowManager windowManager;
     private WindowManager.LayoutParams barParams;
     private int runCount = 0 ;
 
-
     public int barWidth, barHeight;
 
     public OptionBarView(Context context, DesktopSpriteManager desktopSpriteManager) {
         super(context);
-        this.context = context;
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.option_bar_layout, this);
@@ -52,14 +52,12 @@ public class OptionBarView extends LinearLayout {
         windowManager.updateViewLayout(this, barParams);
     }
 
-
     void setButtonsListeners() {
         final Button eatBtn = findViewById(R.id.btn_eat);
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.w("myApp", "Eat!"+runCount);
-//                desktopSpriteManager.showAlertDialog(getApplicationContext());
                 desktopSpriteManager.setQuestionNumber(1);
                 desktopSpriteManager.showOptionDialog("Complementary or Milk?","Complementary","Milk",4000);
                 desktopSpriteManager.hideOptionBar();

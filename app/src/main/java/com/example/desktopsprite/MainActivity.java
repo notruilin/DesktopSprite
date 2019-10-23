@@ -1,3 +1,10 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,18 +14,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+/*
+ * This class implements the MainActivity
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    /*
+     * Method to modify the text of the button on the home screen page
+     */
     public void updateButton(String txt) {
         Button button = findViewById(R.id.button);
         button.setText(txt);

@@ -1,3 +1,10 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.hardware.Sensor;
@@ -5,6 +12,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+
+/*
+ * This class manages the data of sensors
+ * Including accelerometer, light, proximity and step counter
+ */
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -83,12 +95,10 @@ public class SensorsManager implements SensorEventListener {
     }
 
     private void detectLight(SensorEvent event) {
-        //Log.w("myApp", "Detecting light is " + event.values[0]);
         light = event.values[0];
     }
 
     private void detectProximity(SensorEvent event) {
-        //Log.w("myApp", "Detecting proximity is " + event.values[0]);
         proximity = event.values[0];
         if (proximity < 3) {
             // If hasn't reported
@@ -109,7 +119,6 @@ public class SensorsManager implements SensorEventListener {
             float speed = Math.abs(event.values[0] - lastX) + Math.abs(event.values[1] - lastY) + Math.abs(event.values[2] - lastZ) / duration * 1000;
             if (speed > ACCELEROMETER_THRESHOLD) {
                 accelerometerCount += 1;
-                //Log.w("myApp", "Shaking count " + accelerometerCount);
                 if (accelerometerCount > 5) {
                     desktopSpriteService.keepShaking(accelerometerCount);
                 }
@@ -124,11 +133,7 @@ public class SensorsManager implements SensorEventListener {
         }
     }
 
-
     private void detectStepCounter(SensorEvent event) {
         stepCount = (int)event.values[0];
-        Log.w("myApp", "Step: " + stepCount);
     }
-
-
 }
