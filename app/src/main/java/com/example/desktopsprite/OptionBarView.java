@@ -91,6 +91,8 @@ public class OptionBarView extends LinearLayout {
                 desktopSpriteManager.showDialog("Loading the weather on your location...." , 1000);
                 desktopSpriteManager.setQuestionNumber(4);
                 desktopSpriteManager.getCurrentLocation();
+                desktopSpriteManager.setOut(true);
+
                 Log.w("myApp", "Weather!");
                 desktopSpriteManager.hideOptionBar();
 
@@ -105,6 +107,7 @@ public class OptionBarView extends LinearLayout {
                 Log.w("myApp", "Go Home!");
                 desktopSpriteManager.showDialog("Go Home!", 1000);
                 desktopSpriteManager.backHome();
+                desktopSpriteManager.setOut(false);
                 desktopSpriteManager.hideOptionBar();
 
             }

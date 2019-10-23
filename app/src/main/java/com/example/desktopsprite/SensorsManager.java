@@ -32,6 +32,9 @@ public class SensorsManager implements SensorEventListener {
     // If current too close event has reported
     private boolean tooCloseReport = false;
 
+    private boolean tooDarkReport = false;
+    private boolean tooLightfulReport = false;
+
     private static final long ACCELEROMETER_THRESHOLD = 3;
     private long lastAccelerometerCheckTime;
     private int accelerometerCount;
@@ -96,6 +99,18 @@ public class SensorsManager implements SensorEventListener {
 
     private void detectLight(SensorEvent event) {
         light = event.values[0];
+        if (light < 100){
+            if(!tooDarkReport){
+                tooDarkReport = true;
+                desktopSpriteService.tooDark(light);
+            }
+        }
+        if (light > 20000){
+            if(!tooLightfulReport){
+                tooLightfulReport = true;
+                desktopSpriteService.tooLightful(light);
+            }
+        }
     }
 
     private void detectProximity(SensorEvent event) {
@@ -135,5 +150,10 @@ public class SensorsManager implements SensorEventListener {
 
     private void detectStepCounter(SensorEvent event) {
         stepCount = (int)event.values[0];
+    }
+
+    public void resetLightReminder(){
+        this.tooDarkReport = false;
+        this.tooLightfulReport = false;
     }
 }

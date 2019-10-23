@@ -44,6 +44,19 @@ public class DesktopSpriteService extends Service {
         }
     };
 
+    private Timer timer2;    // timer for light/dark reminder in sensor manager
+    private Handler handler2 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 2:
+                    Log.w("myApp", "handelMessage: 2");
+                    sensorsManager.resetLightReminder();
+                    break;
+            }
+        }
+    };
+
     public DesktopSpriteService() {
 
     }
@@ -89,6 +102,11 @@ public class DesktopSpriteService extends Service {
             timer.scheduleAtFixedRate(new RefreshTask(), 3000, 5000);
         }
 
+        if (timer2 == null) {
+            timer2 = new Timer();
+            timer2.scheduleAtFixedRate(new RefreshTask2(), 4000, 1200000);
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -104,6 +122,24 @@ public class DesktopSpriteService extends Service {
     public void tooClose(float proximity) {
         Log.w("myApp", "Too close!!!!!!!!!!!!!!!!!");
     }
+
+    public void tooDark(float light){
+        Log.w("myApp", "Too Dark");
+        spriteManager.remindDark(light);
+
+    }
+
+    public void tooLightful(float light){
+        Log.w("myApp", "Too Dark");
+        spriteManager.remindLightful(light);
+    }
+
+    public void remindMelbourne(){
+        Log.w("myApp", "Near Melbourne");
+        spriteManager.showLandmarkBuilding();
+    }
+
+
 
     /*
      * Called by SensorsManger when the user keeps shaking the phone, "times" presents how many times did the user shake
@@ -132,6 +168,18 @@ public class DesktopSpriteService extends Service {
             message.what = 1;
             handler.sendMessage(message);
             //spriteManager.random_crawl();
+        }
+    }
+
+    // this is the timer task to refresh the light&dark reminder in sensorManager
+    class RefreshTask2 extends TimerTask {
+
+        @Override
+        public void run() {
+            Log.w("myApp", "TIMETASK RUNNING: ");
+            Message message = new Message();
+            message.what = 2;
+            handler.sendMessage(message);
         }
     }
 

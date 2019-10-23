@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.os.Handler;
@@ -100,10 +101,15 @@ public class DesktopSpriteView extends LinearLayout {
     public void initSpritePosition() {
         setSpritePosition(0, 0);
         fallToGround();
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (MotionEvent.ACTION_OUTSIDE == event.getAction()) {
+            Log.w("myApp","outside");
+            return true;
+        }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 current_state = 1;
@@ -115,12 +121,13 @@ public class DesktopSpriteView extends LinearLayout {
                 lastTouchTime = touchTime;
                 spriteX = (int) event.getRawX();
                 spriteY = (int) event.getRawY();
-                int tmp = spriteX + defaultImageWidth / 2;
-                if (spriteX <= tmp) {
-                    setToDefaultView();
-                } else {
-                    setToDefaultViewRightSee();
-                }
+//                desktopSpriteManager.showDialog("XY: "+spriteX+spriteY, 4000);
+//                int tmp = spriteX + defaultImageWidth / 2;
+////                if (spriteX <= tmp) {
+////                    setToDefaultView();
+////                } else {
+////                    setToDefaultViewRightSee();
+////                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 desktopSpriteManager.hideOptionBar();
@@ -171,6 +178,7 @@ public class DesktopSpriteView extends LinearLayout {
         }
         return true;
     }
+
 
     // Check if the sprite is on the bottom edge
     private boolean isHorizontalEdge(float y) {
@@ -491,9 +499,10 @@ public class DesktopSpriteView extends LinearLayout {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return true;
 
     }
+
+
 
 }
