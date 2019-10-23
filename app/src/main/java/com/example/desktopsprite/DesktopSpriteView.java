@@ -10,9 +10,9 @@ package com.example.desktopsprite;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.SoundPool;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +21,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.os.Handler;
+import android.content.res.AssetFileDescriptor;
+
+import java.io.IOException;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * This class implements the view of sprite
@@ -37,6 +43,9 @@ public class DesktopSpriteView extends LinearLayout {
      * 1 for some events is running
      */
     private int current_state = 0;
+    private SoundPool spool;
+    private Map<String,Integer> sound_dict = new HashMap<String,Integer> ();
+    private boolean activate_media = false;
 
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
@@ -82,6 +91,10 @@ public class DesktopSpriteView extends LinearLayout {
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
+
+        //prepare media content
+//        init_sound_pool();
+//        load_media(context);
     }
 
     public void initSpritePosition() {
@@ -401,15 +414,32 @@ public class DesktopSpriteView extends LinearLayout {
             return false;
         }
 
+//        SoundPool media = SoundPool()
+
         int dx = 200;
         int dy = 0;
+        int duration = 1500;
 
-        if (crawl_left) {
+
+        if(this.isVerticalEdge(spriteParams.x) == 1){
+            crawl_left = true;
+
+        }else if (this.isVerticalEdge(spriteParams.x) == 0){
+            crawl_left = false;
+        }
+        if (crawl_left ) {
             dx = -1 * dx;
+            imageView.setImageResource(R.drawable.crawl_anim_left);
+        }
+        else {
+            imageView.setImageResource(R.drawable.crawl_anim);
         }
 
-        int duration = 1500;
+
 //        ObjectAnimator.ofFloat(imageView,"translationX",spriteX,200F).setDuration(duration).start();
+        if(activate_media){
+            spool.play(sound_dict.get("crawl"),1,1,1,1,1);
+        }
 
 
         Log.w("WY", "spriteX = " + spriteParams.x);
@@ -424,7 +454,7 @@ public class DesktopSpriteView extends LinearLayout {
 
         animator.start();
 
-        imageView.setImageResource(R.drawable.crawl_anim);
+
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
         animationDrawable.start();
@@ -436,6 +466,32 @@ public class DesktopSpriteView extends LinearLayout {
 
     public void setCurrent_state(int i) {
         this.current_state = i;
+    }
+    private SoundPool init_sound_pool(){
+        //设置描述音频流信息的属性
+
+//        AudioAttributes abs = new AudioAttributes.Builder()
+//                .setUsage(AudioAttributes.USAGE_MEDIA)
+//                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                .build() ;
+        spool =  new SoundPool.Builder()
+                .setMaxStreams(100)   //设置允许同时播放的流的最大值
+//                .setAudioAttributes(null)   //完全可以设置为null
+                .build() ;
+        return spool;
+    }
+
+    private boolean load_media(Context context){
+        AssetFileDescriptor fd = null;
+        try {
+            fd = context.getAssets().openFd("crawl.map3");
+//            sound_dict.put("crawl",spool.load(fd, fd.getStartOffset(), fd.getLength()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
     }
 
 
