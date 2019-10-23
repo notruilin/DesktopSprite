@@ -55,6 +55,7 @@ public class DesktopSpriteManager {
     private boolean if_response = false;
     private int questionNumber = 0;
     private String weather = "Clear";
+    private boolean tooDark = false;
 
     Context context;
 
@@ -411,6 +412,12 @@ public class DesktopSpriteManager {
     public void remindLightful(float light){
         showDialog("The ambient light is "+light+" lux now, too bright! Stop Reading", 3000);
     }
+
+
+
+
+
+
 
 
 //    public void setResponse(int response) {

@@ -111,6 +111,14 @@ public class SensorsManager implements SensorEventListener {
                 desktopSpriteService.tooLightful(light);
             }
         }
+        if (light>=100 & light<=20000){
+            if(tooDarkReport){
+                desktopSpriteService.normalLight(light);
+            }
+            tooDarkReport = false;
+            tooLightfulReport = false;
+        }
+
     }
 
     private void detectProximity(SensorEvent event) {
@@ -153,7 +161,7 @@ public class SensorsManager implements SensorEventListener {
     }
 
     public void resetLightReminder(){
-        this.tooDarkReport = false;
-        this.tooLightfulReport = false;
+        tooDarkReport = false;
+        tooLightfulReport = false;
     }
 }

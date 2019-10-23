@@ -134,6 +134,12 @@ public class DesktopSpriteService extends Service {
         spriteManager.remindLightful(light);
     }
 
+    public void normalLight(float light){
+        spriteManager.showDialog("Ambient brightness is "+light+" lux now. " +
+                "Comfortable for eyes!", 4000);
+        spriteManager.setBabyDeaultView();
+    }
+
     public void remindMelbourne(){
         Log.w("myApp", "Near Melbourne");
         spriteManager.showLandmarkBuilding();
