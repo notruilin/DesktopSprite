@@ -1,17 +1,26 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+ * This service implements the agent of the sprite
+ * It will automatically trigger some actions, for example, crawl on the screen
+ */
 
 public class DesktopSpriteService extends Service {
 
@@ -23,12 +32,12 @@ public class DesktopSpriteService extends Service {
     private LocationGPSManager locationGPSManager;
 
     private Timer timer;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg){
-            switch(msg.what){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case 1:
-                    Log.w("WY", "handelMessage: 1" );
+                    Log.w("WY", "handelMessage: 1");
                     spriteManager.random_crawl();
                     break;
             }
@@ -46,14 +55,16 @@ public class DesktopSpriteService extends Service {
 
     @Override
     public void onCreate() {
-        Log.w("myApp", "onCreate");
         super.onCreate();
     }
 
+    /*
+     * Method to initialize all required classes and views for a sprite or destroy them
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.w("myApp", "onStartCommand");
-
+        // If the sprite doesn't exist, create one
         if (!spriteExist) {
             if (sensorsManager == null)
                 sensorsManager = new SensorsManager(this);
@@ -65,8 +76,8 @@ public class DesktopSpriteService extends Service {
             spriteManager.createOptionBar(getApplicationContext());
             spriteManager.createDialog(getApplicationContext());
             spriteManager.createOptionDialog(getApplicationContext());
-        }
-        else {
+        } else {
+            // If the sprite exist, destroy all relevant instances
             spriteExist = false;
             MainActivity.getInstance().updateButton("Summon");
             onDestroy();
@@ -87,12 +98,17 @@ public class DesktopSpriteService extends Service {
         super.onDestroy();
     }
 
-    // Called by SensorsManger when the proximity is less than 3 cm, only called one time if the user stays closer than 3 cm
+    /*
+     * Called by SensorsManger when the proximity is less than 3 cm, only called one time if the user stays closer than 3 cm
+     */
     public void tooClose(float proximity) {
         Log.w("myApp", "Too close!!!!!!!!!!!!!!!!!");
     }
 
-    // Called by SensorsManger when the user keeps shaking the phone, "times" presents how many times did the user shake
+    /*
+     * Called by SensorsManger when the user keeps shaking the phone, "times" presents how many times did the user shake
+     * @param   times   how many times does the user shake the phone
+     */
     public void keepShaking(int times) {
         Log.w("myApp", "Keep Shaking!!!!!!!!!!!!!!!!!");
         spriteManager.startVomit();
@@ -112,7 +128,7 @@ public class DesktopSpriteService extends Service {
         @Override
         public void run() {
             Log.w("wy", "TIMETASK RUNNING: ");
-            Message message = new Message( );
+            Message message = new Message();
             message.what = 1;
             handler.sendMessage(message);
             //spriteManager.random_crawl();

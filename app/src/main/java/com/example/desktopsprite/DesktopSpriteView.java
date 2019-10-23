@@ -1,8 +1,14 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,20 +18,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.os.Handler;
-import android.util.Log;
+
+/*
+ * This class implements the view of sprite
+ * Including action animations, updating positions
+ */
 
 public class DesktopSpriteView extends LinearLayout {
     private final static float epsilon = 5;
 
     // If the sprite is showing
     public boolean showing = false;
-    // 0 for default
-    // 1 for some events is running
+    /*
+     * 0 for default
+     * 1 for some events is running
+     */
     private int current_state = 0;
 
     public int spriteWidth, spriteHeight;
@@ -41,7 +51,9 @@ public class DesktopSpriteView extends LinearLayout {
     private final WindowManager windowManager;
     private DesktopSpriteManager desktopSpriteManager;
 
+    // The threshold to detect a double click
     private static final long DOUBLE_CLICK_TIME = 300;
+    // The last time the user touches the sprite
     private long lastTouchTime;
 
     private boolean holding = false;
@@ -79,27 +91,23 @@ public class DesktopSpriteView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //Log.w("myApp", "touched!");
-
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 current_state = 1;
                 long touchTime = System.currentTimeMillis();
+                // Detect double click
                 if (touchTime - lastTouchTime <= DOUBLE_CLICK_TIME) {
                     onDoubleClick();
                 }
                 lastTouchTime = touchTime;
                 spriteX = (int) event.getRawX();
                 spriteY = (int) event.getRawY();
-                int tmp = spriteX+ defaultImageWidth/2;
-//                Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString());
-//                Log.w("myApp", "down! " + "X: " + ((Integer)tmp).toString());
-                if (spriteX <= tmp){
+                int tmp = spriteX + defaultImageWidth / 2;
+                if (spriteX <= tmp) {
                     setToDefaultView();
-                }else{
+                } else {
                     setToDefaultViewRightSee();
                 }
-                //Log.w("myApp", "down! " + "X: " + ((Integer)spriteX).toString() + " Y: " + ((Integer)spriteY).toString());
                 break;
             case MotionEvent.ACTION_MOVE:
                 desktopSpriteManager.hideOptionBar();
@@ -111,11 +119,11 @@ public class DesktopSpriteView extends LinearLayout {
                 int dy = (int) event.getRawY() - spriteY;
                 spriteX += dx;
                 spriteY += dy;
-                if (spriteX < 0)    spriteX = 0;
-                if (spriteY < 0)    spriteY = 0;
-                if (spriteX > screenWidth)    spriteX = screenWidth;
-                if (spriteY > screenHeight)    spriteY = screenHeight;
-                //Log.w("myApp", "move! " + "dx: " + ((Integer)dx).toString() + " dy: " + ((Integer)dy).toString());
+                // Adjust the coordinate to make sure it is inside the screen
+                if (spriteX < 0) spriteX = 0;
+                if (spriteY < 0) spriteY = 0;
+                if (spriteX > screenWidth) spriteX = screenWidth;
+                if (spriteY > screenHeight) spriteY = screenHeight;
                 if (event.getPointerCount() == 1) {
                     updateSpritePosition(dx, dy);
                 }
@@ -124,22 +132,23 @@ public class DesktopSpriteView extends LinearLayout {
                 current_state = 0;
                 if (holding) {
                     holding = false;
+                    // Embed the sprite to the bottom edge
                     if (isHorizontalEdge(event.getRawY())) {
                         desktopSpriteManager.setSilenceMode(2);
                         showHorizontalHide();
-                    }
-                    else {
+                    } else {
+                        // Embed the sprite to the left edge
                         int verticalEdge = isVerticalEdge(event.getRawX());
                         if (verticalEdge == 0) {
                             desktopSpriteManager.setSilenceMode(2);
                             playVerticalLeftHide();
-                        }
-                        else {
+                        } else {
+                            // Embed the sprite to the right edge
                             if (verticalEdge == 1) {
                                 desktopSpriteManager.setSilenceMode(2);
                                 playVerticalRightHide();
-                            }
-                            else{
+                            } else {
+                                // Let to sprite fall down to the ground
                                 fallToGround();
                                 desktopSpriteManager.setSilenceMode(0);
                             }
@@ -147,10 +156,10 @@ public class DesktopSpriteView extends LinearLayout {
                     }
                 }
         }
-
         return true;
     }
 
+    // Check if the sprite is on the bottom edge
     private boolean isHorizontalEdge(float y) {
         if (screenHeight - y < epsilon) {
             return true;
@@ -158,9 +167,13 @@ public class DesktopSpriteView extends LinearLayout {
         return false;
     }
 
-    // Return 0 means left vertical edge, 1 right vertical edge, -1 not vertical edge
+    /*
+     * Check if the sprite is on the left or right edge
+     * @param   x   the x coordinate of sprite
+     * @return  0 means left vertical edge, 1 right vertical edge, -1 not vertical edge
+     */
     private int isVerticalEdge(float x) {
-        if (x < epsilon)    return 0;
+        if (x < epsilon) return 0;
         if (screenWidth - x < epsilon) return 1;
         return -1;
     }
@@ -170,35 +183,33 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void updateSpritePosition(int dx, int dy) {
-        if (!showing)   return;
+        if (!showing) return;
         spriteParams.x += dx;
         spriteParams.y += dy;
-        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
         // Move the optionBar with the sprite, set the option bar to the top center of the sprite
-        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
+        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth / 2, spriteParams.y);
         // Move the dialog with the sprite
         moveDialogWithSprite(spriteParams.x, spriteParams.y);
-        moveAlertDialogWithSprite(spriteParams.x,spriteParams.y);
+        moveAlertDialogWithSprite(spriteParams.x, spriteParams.y);
     }
 
     void setSpritePosition(int x, int y) {
-        if (!showing)   return;
+        if (!showing) return;
         spriteParams.x = x;
         spriteParams.y = y;
-        //Log.w("myPos", spriteParams.x + " " + spriteParams.y);
         windowManager.updateViewLayout(this, spriteParams);
         // Move the optionBar with the sprite, set the option bar to the top center of the sprite
-        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth/2, spriteParams.y);
+        desktopSpriteManager.setBarViewPosition(spriteParams.x + defaultImageWidth / 2, spriteParams.y);
         // Move the dialog with the sprite
         moveDialogWithSprite(spriteParams.x, spriteParams.y);
-        moveAlertDialogWithSprite(spriteParams.x,spriteParams.y);
+        moveAlertDialogWithSprite(spriteParams.x, spriteParams.y);
     }
 
     void moveDialogWithSprite(int x, int y) {
         boolean left = true;
         int toRight = 0;
-        if (x < screenWidth/2) {
+        if (x < screenWidth / 2) {
             left = false;
             toRight = defaultImageWidth;
         }
@@ -208,7 +219,7 @@ public class DesktopSpriteView extends LinearLayout {
     void moveAlertDialogWithSprite(int x, int y) {
         boolean left = true;
         int toRight = 0;
-        if (x < screenWidth/2) {
+        if (x < screenWidth / 2) {
             left = false;
             toRight = defaultImageWidth;
         }
@@ -223,7 +234,7 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
-    void eatComplementary(){
+    void eatComplementary() {
         imageView.setImageResource(R.drawable.feed_complementary);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
@@ -232,7 +243,7 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
-    void drinkMilk(){
+    void drinkMilk() {
         imageView.setImageResource(R.drawable.feed_milk);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
@@ -241,7 +252,7 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
-    void play_shower(){
+    void play_shower() {
         imageView.setImageResource(R.drawable.shower);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
@@ -250,14 +261,14 @@ public class DesktopSpriteView extends LinearLayout {
         default_when_animation_ends(animationDrawable);
     }
 
-    void play_aeolian(){
+    void play_aeolian() {
         imageView.setImageResource(R.drawable.sleep_play_aeolian_bell);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.setOneShot(true);
         animationDrawable.start();
         this.current_state = 1;
         int duration = 0;
-        for(int i=0;i<animationDrawable.getNumberOfFrames();i++){
+        for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
             duration += animationDrawable.getDuration(i);
         }
         Handler handler = new Handler();
@@ -266,10 +277,10 @@ public class DesktopSpriteView extends LinearLayout {
             public void run() {
                 sleep_after_play_aeolian();
             }
-        },duration);
+        }, duration);
     }
 
-    void sleep_after_play_aeolian(){
+    void sleep_after_play_aeolian() {
         imageView.setImageResource(R.drawable.sleep);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
@@ -277,42 +288,41 @@ public class DesktopSpriteView extends LinearLayout {
 
     }
 
-    void play_sunny(){
+    void play_sunny() {
         imageView.setImageResource(R.drawable.sun_beach);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
-
 
     void fallToGround() {
         final int[] location = new int[2];
         this.current_state = 1;
         imageView.getLocationOnScreen(location);
         imageView.setImageResource(R.drawable.free_fall);
+        // Set the animation duration
         ValueAnimator animator = ValueAnimator.ofFloat(location[1], screenHeight - defaultImageHeight - statusBarHeight);
         int duration = screenHeight - defaultImageHeight - statusBarHeight - location[1];
-        if (duration < 0)   duration = 1;
+        if (duration < 0) duration = 1;
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setSpritePosition(location[0],(int)(float)animation.getAnimatedValue());
+                setSpritePosition(location[0], (int) (float) animation.getAnimatedValue());
             }
         });
-        animator.addListener(new AnimatorListenerAdapter()
-        {
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
                 setToGround();
             }
         });
         animator.start();
     }
 
-    void default_when_animation_ends(AnimationDrawable animationDrawable){
+    // Set the sprite to default view
+    void default_when_animation_ends(AnimationDrawable animationDrawable) {
         int duration = 0;
-        for(int i=0;i<animationDrawable.getNumberOfFrames();i++){
+        for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
             duration += animationDrawable.getDuration(i);
         }
         Handler handler = new Handler();
@@ -321,7 +331,7 @@ public class DesktopSpriteView extends LinearLayout {
             public void run() {
                 setToDefaultView();
             }
-        },duration);
+        }, duration);
     }
 
     void showHolding() {
@@ -357,7 +367,7 @@ public class DesktopSpriteView extends LinearLayout {
         this.current_state = 0;
     }
 
-    void setToDefaultViewRightSee(){
+    void setToDefaultViewRightSee() {
         imageView.setImageResource(R.drawable.see_right);
         defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
@@ -376,27 +386,25 @@ public class DesktopSpriteView extends LinearLayout {
     void onDoubleClick() {
         if (optionBarShowing) {
             desktopSpriteManager.hideOptionBar();
-          //  this.current_state =0;
-        }
-        else {
+            // this.current_state =0;
+        } else {
             desktopSpriteManager.showOptionBar(5000);
-           // this.current_state = 1;
+            // this.current_state = 1;
         }
     }
-
 
 
     public boolean play_crawl(boolean crawl_left) {
 
         //check current state
-        if (current_state != 0 ){
+        if (current_state != 0) {
             return false;
         }
 
         int dx = 200;
         int dy = 0;
 
-        if (crawl_left){
+        if (crawl_left) {
             dx = -1 * dx;
         }
 
@@ -404,13 +412,13 @@ public class DesktopSpriteView extends LinearLayout {
 //        ObjectAnimator.ofFloat(imageView,"translationX",spriteX,200F).setDuration(duration).start();
 
 
-        Log.w("WY", "spriteX = " +spriteParams.x);
+        Log.w("WY", "spriteX = " + spriteParams.x);
         Log.w("WY", "spriteY = " + spriteParams.y);
-        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x+dx).setDuration(duration);
+        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x + dx).setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setSpritePosition((int)(float)animation.getAnimatedValue(),spriteParams.y);
+                setSpritePosition((int) (float) animation.getAnimatedValue(), spriteParams.y);
             }
         });
 
@@ -426,7 +434,7 @@ public class DesktopSpriteView extends LinearLayout {
         return true;
     }
 
-    public void setCurrent_state(int i){
+    public void setCurrent_state(int i) {
         this.current_state = i;
     }
 

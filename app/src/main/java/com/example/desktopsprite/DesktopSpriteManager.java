@@ -1,9 +1,13 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
-import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
@@ -11,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +28,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/*
+ * This class implements the specific actions of the sprite
+ * In other words, how to perform an action
+ */
 
 public class DesktopSpriteManager {
     private WindowManager windowManager;
@@ -33,13 +40,14 @@ public class DesktopSpriteManager {
     private DialogView dialogView;
     private OptionDialogView optionDialogView;
 
-
     private long lastShowOptionBarTime;
     private long lastShowDialogTime;
 
-    // SilenceMode == 0, no limit
-    // SilenceMode == 1, disable dialog
-    // SilenceMode == 2, disable both dialog, option bar
+    /*
+     * SilenceMode == 0, no limit
+     * SilenceMode == 1, disable dialog
+     * SilenceMode == 2, disable both dialog and option bar
+     */
     private int silenceMode = 0;
 
     private int response_from_alert_dialog = 1;
@@ -49,6 +57,7 @@ public class DesktopSpriteManager {
 
     Context context;
 
+    // Initialize the sprite view
     public void showSprite(Context context) {
         this.context = context;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -61,6 +70,7 @@ public class DesktopSpriteManager {
         MainActivity.getInstance().updateButton("Dismiss");
     }
 
+    // Initialize the option bar view
     public void createOptionBar(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         optionBarView = new OptionBarView(context, this);
@@ -70,6 +80,7 @@ public class DesktopSpriteManager {
         optionBarView.setVisibility(View.INVISIBLE);
     }
 
+    // Initialize the dialog view
     public void createDialog(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         dialogView = new DialogView(context, this);
@@ -79,6 +90,7 @@ public class DesktopSpriteManager {
         dialogView.setVisibility(View.INVISIBLE);
     }
 
+    // Initialize the option dialog view
     public void createOptionDialog(Context context) {
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         optionDialogView = new OptionDialogView(context, this);
@@ -88,6 +100,7 @@ public class DesktopSpriteManager {
         optionDialogView.setVisibility(View.INVISIBLE);
     }
 
+    // Set layout parameters
     private WindowManager.LayoutParams setParams(int width, int height) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -99,8 +112,12 @@ public class DesktopSpriteManager {
         return params;
     }
 
+    /*
+     * Show the option bar view, then hide it after specific seconds
+     * @param    duration    hide the option bar after how many seconds
+     */
     public void showOptionBar(final int duration) {
-        if (silenceMode == 2)    return;
+        if (silenceMode == 2) return;
         lastShowOptionBarTime = System.currentTimeMillis();
         spriteView.optionBarShowing = true;
 
@@ -110,15 +127,20 @@ public class DesktopSpriteManager {
             @Override
             public void run() {
                 // If show option bar again during duration
-                if (System.currentTimeMillis() - lastShowOptionBarTime < duration)  return;
+                if (System.currentTimeMillis() - lastShowOptionBarTime < duration) return;
                 optionBarView.setVisibility(View.GONE);
                 spriteView.optionBarShowing = false;
             }
         }, duration);
     }
 
+    /*
+     * Show the dialog view, then hide it after specific seconds
+     * @param    txt         the text to show on the dialog
+     * @param    duration    hide the option bar after how many seconds
+     */
     public void showDialog(String txt, final int duration) {
-        if (silenceMode >= 1)    return;
+        if (silenceMode >= 1) return;
         lastShowDialogTime = System.currentTimeMillis();
         dialogView.setTxt(txt);
         dialogView.setVisibility(View.VISIBLE);
@@ -127,14 +149,21 @@ public class DesktopSpriteManager {
             @Override
             public void run() {
                 // If show dialog again during duration
-                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                if (System.currentTimeMillis() - lastShowDialogTime < duration) return;
                 dialogView.setVisibility(View.GONE);
             }
         }, duration);
     }
 
+    /*
+     * Show the option dialog view, then hide it after specific seconds
+     * @param    txt1        the description of the option
+     * @param    txt2        option1
+     * @param    txt3        option2
+     * @param    duration    hide the option bar after how many seconds
+     */
     public void showOptionDialog(String txt1, String txt2, String txt3, final int duration) {
-        if (silenceMode >= 1)    return;
+        if (silenceMode >= 1) return;
         lastShowDialogTime = System.currentTimeMillis();
         optionDialogView.setTxt(txt1);
         optionDialogView.setVisibility(View.VISIBLE);
@@ -145,14 +174,14 @@ public class DesktopSpriteManager {
             @Override
             public void run() {
                 // If show dialog again during duration
-                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                if (System.currentTimeMillis() - lastShowDialogTime < duration) return;
                 optionDialogView.setVisibility(View.GONE);
             }
         }, duration);
     }
 
     public void showDialog2(String txt, final int duration) {
-        if (silenceMode >= 1)    return;
+        if (silenceMode >= 1) return;
         lastShowDialogTime = System.currentTimeMillis();
         dialogView.setTxt(txt);
         dialogView.setVisibility(View.VISIBLE);
@@ -161,31 +190,41 @@ public class DesktopSpriteManager {
             @Override
             public void run() {
                 // If show dialog again during duration
-                if (System.currentTimeMillis() - lastShowDialogTime < duration)  return;
+                if (System.currentTimeMillis() - lastShowDialogTime < duration) return;
                 dialogView.setVisibility(View.GONE);
             }
         }, duration);
     }
 
-
+    /*
+     * Set the sprite to silence mode to avoid interruption
+     * @param   silenceMode    the silence level to set, 0 no limitation, 1 disable the dialog, 2 disable the option bar
+     */
     public void setSilenceMode(int silenceMode) {
         this.silenceMode = silenceMode;
     }
 
+    // Get the current silence level, 0 no limitation, 1 disable the dialog, 2 disable the option bar
     public int getSilenceMode() {
         return silenceMode;
     }
 
+    // Set the option bar position to (x,y)
     public void setBarViewPosition(int x, int y) {
         optionBarView.setPosition(x, y);
     }
 
-    // If left == true, show the dialog on the left side of sprite
+    /*
+     * Set the option bar position
+     * @param   x       the x coordinate of sprite (if left == true, left edge, if left == false, right edge)
+     * @param   y       the y coordinate of sprite (top edge)
+     * @param   left    if left == true, show the dialog on the left side of sprite
+     */
     public void setDialogViewPosition(int x, int y, boolean left) {
         dialogView.setPosition(x, y, left);
     }
 
-    public void setAlertDialogViewPosition(int x, int y, boolean left){
+    public void setAlertDialogViewPosition(int x, int y, boolean left) {
         optionDialogView.setPosition(x, y, left);
     }
 
@@ -194,16 +233,15 @@ public class DesktopSpriteManager {
         optionBarView.setVisibility(View.INVISIBLE);
     }
 
-    public void hideDialogView(){
+    public void hideDialogView() {
         dialogView.setVisibility(View.INVISIBLE);
     }
 
-    public void hideOptionDialogView(){
+    public void hideOptionDialogView() {
         optionDialogView.setVisibility(View.INVISIBLE);
     }
 
     public void destroySprite() {
-        Log.w("myApp", "destroy");
         spriteView.showing = false;
         windowManager.removeView(spriteView);
         windowManager.removeView(optionBarView);
@@ -215,21 +253,25 @@ public class DesktopSpriteManager {
     }
 
     public void checkLight() {
-        float light  = SensorsManager.getInstance().getLight();
+        float light = SensorsManager.getInstance().getLight();
         showDialog("The light is " + light + " lx", 3000);
     }
 
-    public void feed_milk(){
+    public void feed_milk() {
         spriteView.drinkMilk();
     }
 
-    public void feed_complementary(){
+    public void feed_complementary() {
         spriteView.eatComplementary();
     }
 
-    public void shower() { spriteView.play_shower();}
+    public void shower() {
+        spriteView.play_shower();
+    }
 
-    public void sleep() {spriteView.play_aeolian();}
+    public void sleep() {
+        spriteView.play_aeolian();
+    }
 
     public void startVomit() {
         spriteView.playVomitAnim();
@@ -244,14 +286,14 @@ public class DesktopSpriteManager {
     }
 
 
-    public void showWeather(String str){
-        Log.w("myApp", "Have get Weather"+str);
+    public void showWeather(String str) {
+        Log.w("myApp", "Have get Weather" + str);
         String mainWeather = "";
         String description = "";
         try {
             JSONObject json = new JSONObject(str);
             String data = json.getString("weather");
-            String weather=data.replace("[","").replace("]","");
+            String weather = data.replace("[", "").replace("]", "");
             Log.w("myApp", weather);
             JSONObject json2 = new JSONObject(weather);
             mainWeather = json2.getString("main");
@@ -261,33 +303,31 @@ public class DesktopSpriteManager {
             e.printStackTrace();
         }
 
-        if(mainWeather.equals("Clear")){
+        if (mainWeather.equals("Clear")) {
             Log.w("myApp", description);
             //for test
             hideDialogView();
             spriteView.sleep_after_play_aeolian();
-            showOptionDialog(description+" now", "set a beach background", "cancel", 4000);
-        }
-        else if(mainWeather.equals("Rain")||mainWeather.equals("Snow")||mainWeather.equals("Drizzle")||mainWeather.equals("Clouds")){
+            showOptionDialog(description + " now", "set a beach background", "cancel", 4000);
+        } else if (mainWeather.equals("Rain") || mainWeather.equals("Snow") || mainWeather.equals("Drizzle") || mainWeather.equals("Clouds")) {
             Log.w("myApp", description);
             hideDialogView();
 
             spriteView.sleep_after_play_aeolian();
 
-            showOptionDialog(description+" now", "give baby an umbrella", "cancel", 4000);
+            showOptionDialog(description + " now", "give baby an umbrella", "cancel", 4000);
 
-        }
-        else if(mainWeather.equals("Thunderstorm")){
+        } else if (mainWeather.equals("Thunderstorm")) {
             Log.w("myApp", description);
             hideDialogView();
 
             //for test
             spriteView.sleep_after_play_aeolian();
 
-            showOptionDialog(description+" now", "give baby an earphone", "cancel", 4000);
+            showOptionDialog(description + " now", "give baby an earphone", "cancel", 4000);
 
-        }
-        else{            hideDialogView();
+        } else {
+            hideDialogView();
         }
 
     }
@@ -296,14 +336,14 @@ public class DesktopSpriteManager {
     public void getCurrentLocation() {
 
         double locationNow[] = LocationGPSManager.getInstance().getLocation();
-        Log.w("myApp", "lat="+locationNow[0]+"&lon="+locationNow[1]);
+        Log.w("myApp", "lat=" + locationNow[0] + "&lon=" + locationNow[1]);
 
-        new GetData().execute("lat="+locationNow[0]+"&lon="+locationNow[1]);
+        new GetData().execute("lat=" + locationNow[0] + "&lon=" + locationNow[1]);
     }
 
 
     //get weather data
-    class GetData extends AsyncTask<String,Integer,String> {
+    class GetData extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -327,9 +367,8 @@ public class DesktopSpriteManager {
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }
-            finally {
-                if(conn!=null)
+            } finally {
+                if (conn != null)
                     conn.disconnect();
             }
             return result;
@@ -338,7 +377,7 @@ public class DesktopSpriteManager {
         @Override
         protected void onProgressUpdate(Integer... progresses) {
             Log.w("myApp", "on progress");
-            showDialog("Searching for Weather...",1000);
+            showDialog("Searching for Weather...", 1000);
         }
 
         @Override
@@ -350,13 +389,13 @@ public class DesktopSpriteManager {
 
     }
 
-    public void backHome(){
+    public void backHome() {
         spriteView.setToDefaultView();
     }
 
 
     public int getSteps() {
-        int steps  = SensorsManager.getInstance().getStepCounter();
+        int steps = SensorsManager.getInstance().getStepCounter();
         return steps;
 
     }
@@ -365,7 +404,7 @@ public class DesktopSpriteManager {
         this.response_from_alert_dialog = response;
     }
 
-    public int getResponse(){
+    public int getResponse() {
         return this.response_from_alert_dialog;
     }
 
@@ -377,7 +416,7 @@ public class DesktopSpriteManager {
 //        return if_response;
 //    }
 
-    public void showDefault(){
+    public void showDefault() {
         spriteView.setToDefaultView();
     }
 
@@ -387,33 +426,31 @@ public class DesktopSpriteManager {
         context.startActivity(intent);
     }
 
-    public void setQuestionNumber(int i){
+    public void setQuestionNumber(int i) {
         this.questionNumber = i;
     }
 
-    public int getQuestionNumber(){
+    public int getQuestionNumber() {
         return this.questionNumber;
     }
 
-    public void showActionOnWeather(){
-        if(this.weather.equals("Clear")){
+    public void showActionOnWeather() {
+        if (this.weather.equals("Clear")) {
             spriteView.play_shower();
-            showDialog("Playing on beach!",2000);
-        }
-        else if(this.weather.equals("Rain")||this.weather.equals("Snow")||this.weather.equals("Drizzle")||this.weather.equals("Clouds")){
+            showDialog("Playing on beach!", 2000);
+        } else if (this.weather.equals("Rain") || this.weather.equals("Snow") || this.weather.equals("Drizzle") || this.weather.equals("Clouds")) {
             spriteView.play_shower();
-            showDialog("Lovely Umbrella!",2000);
+            showDialog("Lovely Umbrella!", 2000);
 
-        }
-        else if(this.weather.equals("Thunderstorm")){
+        } else if (this.weather.equals("Thunderstorm")) {
             spriteView.play_shower();
-            showDialog("Wonderful Songs!",2000);
+            showDialog("Wonderful Songs!", 2000);
 
+        } else {
         }
-        else{ }
     }
 
-    public void setBabyDeaultView(){
+    public void setBabyDeaultView() {
         spriteView.setToDefaultView();
     }
 

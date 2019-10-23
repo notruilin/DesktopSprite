@@ -1,3 +1,10 @@
+/*
+ * Project - Desktop Sprite
+ * COMP90018 Mobile Computing Systems Programming
+ * Author - Yao Wang, Tong He, Dinghao Yong, Jianyu Yan, Ruilin Liu
+ * Oct 2019, Semester 2
+ */
+
 package com.example.desktopsprite;
 
 import android.Manifest;
@@ -7,12 +14,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.List;
+/*
+ * This class manages GPS data
+ */
 
 public class LocationGPSManager implements LocationListener {
 
@@ -67,8 +75,5 @@ public class LocationGPSManager implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
-
-
-
 
 }
