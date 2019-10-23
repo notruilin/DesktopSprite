@@ -83,5 +83,4 @@ public class OptionDialogView extends LinearLayout{
         windowManager.updateViewLayout(this, dialogParams);
     }
 
-
 }

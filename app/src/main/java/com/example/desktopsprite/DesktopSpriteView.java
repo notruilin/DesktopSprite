@@ -281,6 +281,8 @@ public class DesktopSpriteView extends LinearLayout {
         imageView.setImageResource(R.drawable.sun_beach);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        this.current_state = 1;
+
     }
 
 
@@ -429,6 +431,5 @@ public class DesktopSpriteView extends LinearLayout {
     public void setCurrent_state(int i){
         this.current_state = i;
     }
-
 
 }
