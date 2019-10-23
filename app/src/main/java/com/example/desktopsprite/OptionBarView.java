@@ -54,6 +54,9 @@ public class OptionBarView extends LinearLayout {
 
     void setButtonsListeners() {
         final Button eatBtn = findViewById(R.id.btn_eat);
+        SharedPreferenceManager spm = new SharedPreferenceManager(getContext());
+        final String petName = spm.getPet();
+
         eatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
