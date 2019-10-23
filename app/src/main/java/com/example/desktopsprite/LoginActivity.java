@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferenceManager spm = new SharedPreferenceManager(this);
         HashMap<String, String> user = spm.getUser();
 
-
+        //pswd
         if (userEmail.equals("admin@unimelb.edu.au") && userPswd.equals("123456")) {
             String uid = "1";
             spm.saveUser(user.get(spm.NAME),"admin@unimelb.edu.au", "1");
