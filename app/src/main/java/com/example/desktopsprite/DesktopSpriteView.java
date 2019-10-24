@@ -38,7 +38,7 @@ import java.util.TimerTask;
  */
 
 public class DesktopSpriteView extends LinearLayout {
-    private final static float epsilon = 5;
+    private final static float epsilon = 50;
 
     // If the sprite is showing
     public boolean showing = false;
@@ -74,6 +74,7 @@ public class DesktopSpriteView extends LinearLayout {
     private long lastTouchTime;
 
     private boolean holding = false;
+    private boolean vomiting = false;
     public boolean optionBarShowing = false;
 
     private ImageView imageView;
@@ -366,6 +367,7 @@ public class DesktopSpriteView extends LinearLayout {
             @Override
             public void run() {
                 setToDefaultView();
+                if (vomiting = true)    vomiting = false;
             }
         }, duration);
 
@@ -406,6 +408,24 @@ public class DesktopSpriteView extends LinearLayout {
         this.current_state = 0;
 
         sent_message(1);
+    }
+
+    void setToSeeLeft() {
+        if (vomiting || !desktopSpriteManager.playingBall)   return;
+        imageView.setImageResource(R.drawable.see_left);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
+    void setToSeeRight() {
+        if (vomiting || !desktopSpriteManager.playingBall)   return;
+        imageView.setImageResource(R.drawable.see_right);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
     }
 
     void setToDefaultViewRightSee() {
