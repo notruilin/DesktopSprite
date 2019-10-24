@@ -323,13 +323,6 @@ public class DesktopSpriteView extends LinearLayout {
 
     }
 
-    void play_sunny() {
-        imageView.setImageResource(R.drawable.sun_beach);
-        animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
-        this.current_state = 1;
-
-    }
 
     void fallToGround() {
         final int[] location = new int[2];
@@ -444,6 +437,49 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.setOneShot(true);
         animationDrawable.start();
         default_when_animation_ends(animationDrawable);
+    }
+
+    void play_sunny() {
+        imageView.setImageResource(R.drawable.sun_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_sunny_after() {
+        imageView.setImageResource(R.drawable.sun_after);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+
+    }
+
+    void play_rain(){
+        imageView.setImageResource(R.drawable.rain_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_rain_after(){
+        imageView.setImageResource(R.drawable.rain_after);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_thunder(){
+        imageView.setImageResource(R.drawable.thunder_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_thunder_after(){
+        imageView.setImageResource(R.drawable.thunder_afer);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
     }
 
     void onDoubleClick() {

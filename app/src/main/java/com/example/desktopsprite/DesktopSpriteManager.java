@@ -329,13 +329,13 @@ public class DesktopSpriteManager {
             Log.w("myApp", description);
             //for test
             hideDialogView();
-            spriteView.sleep_after_play_aeolian();
-            showOptionDialog(description + " now", "set a beach background", "cancel", 4000);
+            spriteView.play_sunny();
+            showOptionDialog(description + " now", "set a beach background", "cancel", 10000);
         } else if (mainWeather.equals("Rain") || mainWeather.equals("Snow") || mainWeather.equals("Drizzle") || mainWeather.equals("Clouds")) {
             Log.w("myApp", description);
             hideDialogView();
 
-            spriteView.sleep_after_play_aeolian();
+            spriteView.play_rain();
 
             showOptionDialog(description + " now", "give baby an umbrella", "cancel", 4000);
 
@@ -344,7 +344,7 @@ public class DesktopSpriteManager {
             hideDialogView();
 
             //for test
-            spriteView.sleep_after_play_aeolian();
+            spriteView.play_thunder();
 
             showOptionDialog(description + " now", "give baby an earphone", "cancel", 4000);
 
@@ -477,14 +477,14 @@ public class DesktopSpriteManager {
 
     public void showActionOnWeather() {
         if (this.weather.equals("Clear")) {
-            spriteView.play_shower();
+            spriteView.play_sunny_after();
             showDialog("Playing on beach!", 2000);
         } else if (this.weather.equals("Rain") || this.weather.equals("Snow") || this.weather.equals("Drizzle") || this.weather.equals("Clouds")) {
-            spriteView.play_shower();
+            spriteView.play_rain_after();
             showDialog("Lovely Umbrella!", 2000);
 
         } else if (this.weather.equals("Thunderstorm")) {
-            spriteView.play_shower();
+            spriteView.play_thunder_after();
             showDialog("Wonderful Songs!", 2000);
 
         } else {
