@@ -483,7 +483,7 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void play_landmark(){
-        imageView.setImageResource(R.drawable.gps_st_pauls_church);
+        imageView.setImageResource(R.drawable.st_pauls_church);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
         this.current_state=1;

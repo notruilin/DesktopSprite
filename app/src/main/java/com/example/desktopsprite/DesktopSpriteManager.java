@@ -299,7 +299,7 @@ public class DesktopSpriteManager {
 
     public void showLandmarkBuilding(){
         if (this.out){
-            showDialog("You are near the St.Paul Church!!!", 1000);
+            showDialog("You are near the St.Paul Church!!!", 3000);
             spriteView.play_landmark();
         }else{}
     }
