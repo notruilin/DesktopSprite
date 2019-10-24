@@ -40,6 +40,7 @@ public class SensorsManager implements SensorEventListener {
     private int accelerometerCount;
     private float lastX, lastY, lastZ;
 
+    private int stepBeforeOpen = 0;
     private int stepCount;
 
     public static SensorsManager getInstance() {
@@ -73,7 +74,7 @@ public class SensorsManager implements SensorEventListener {
 
     // Get step count since service opened
     public int getStepCounter() {
-        return stepCount;
+        return stepCount - stepBeforeOpen;
     }
 
     public void onSensorChanged(SensorEvent event) {
@@ -136,13 +137,14 @@ public class SensorsManager implements SensorEventListener {
     }
 
     private void detectAccelerometer(SensorEvent event) {
+        desktopSpriteService.detectMovement(-event.values[0], event.values[1]);
         long curTime = System.currentTimeMillis();
         long duration = curTime - lastAccelerometerCheckTime;
         if (duration > 1) {
             float speed = Math.abs(event.values[0] - lastX) + Math.abs(event.values[1] - lastY) + Math.abs(event.values[2] - lastZ) / duration * 1000;
             if (speed > ACCELEROMETER_THRESHOLD) {
                 accelerometerCount += 1;
-                if (accelerometerCount > 5) {
+                if (accelerometerCount > 50) {
                     desktopSpriteService.keepShaking(accelerometerCount);
                 }
             }
@@ -157,6 +159,7 @@ public class SensorsManager implements SensorEventListener {
     }
 
     private void detectStepCounter(SensorEvent event) {
+        if (stepBeforeOpen == 0)    stepBeforeOpen = (int)event.values[0];
         stepCount = (int)event.values[0];
     }
 

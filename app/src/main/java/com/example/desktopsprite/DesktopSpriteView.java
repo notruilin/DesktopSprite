@@ -38,7 +38,7 @@ import java.util.TimerTask;
  */
 
 public class DesktopSpriteView extends LinearLayout {
-    private final static float epsilon = 5;
+    private final static float epsilon = 50;
 
     // If the sprite is showing
     public boolean showing = false;
@@ -74,6 +74,7 @@ public class DesktopSpriteView extends LinearLayout {
     private long lastTouchTime;
 
     private boolean holding = false;
+    private boolean vomiting = false;
     public boolean optionBarShowing = false;
 
     private ImageView imageView;
@@ -322,13 +323,6 @@ public class DesktopSpriteView extends LinearLayout {
 
     }
 
-    void play_sunny() {
-        imageView.setImageResource(R.drawable.sun_beach);
-        animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
-        this.current_state = 1;
-
-    }
 
     void fallToGround() {
         final int[] location = new int[2];
@@ -366,6 +360,7 @@ public class DesktopSpriteView extends LinearLayout {
             @Override
             public void run() {
                 setToDefaultView();
+                if (vomiting = true)    vomiting = false;
             }
         }, duration);
 
@@ -408,6 +403,24 @@ public class DesktopSpriteView extends LinearLayout {
         sent_message(1);
     }
 
+    void setToSeeLeft() {
+        if (vomiting || !desktopSpriteManager.playingBall)   return;
+        imageView.setImageResource(R.drawable.see_left);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
+    void setToSeeRight() {
+        if (vomiting || !desktopSpriteManager.playingBall)   return;
+        imageView.setImageResource(R.drawable.see_right);
+        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
+        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
     void setToDefaultViewRightSee() {
         imageView.setImageResource(R.drawable.see_right);
         defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
@@ -424,6 +437,49 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable.setOneShot(true);
         animationDrawable.start();
         default_when_animation_ends(animationDrawable);
+    }
+
+    void play_sunny() {
+        imageView.setImageResource(R.drawable.sun_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_sunny_after() {
+        imageView.setImageResource(R.drawable.sun_after);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+
+    }
+
+    void play_rain(){
+        imageView.setImageResource(R.drawable.rain_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_rain_after(){
+        imageView.setImageResource(R.drawable.rain_after);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_thunder(){
+        imageView.setImageResource(R.drawable.thunder_before);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
+    void play_thunder_after(){
+        imageView.setImageResource(R.drawable.thunder_afer);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
     }
 
     void onDoubleClick() {

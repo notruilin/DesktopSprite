@@ -41,6 +41,7 @@ public class DesktopSpriteManager {
     private OptionBarView optionBarView;
     private DialogView dialogView;
     private OptionDialogView optionDialogView;
+    private BallView ballView;
 
     private long lastShowOptionBarTime;
     private long lastShowDialogTime;
@@ -58,6 +59,7 @@ public class DesktopSpriteManager {
     private int questionNumber = 0;
     private String weather = "Clear";
     private boolean tooDark = false;
+    public boolean playingBall = false;
 
     Context context;
 
@@ -106,6 +108,16 @@ public class DesktopSpriteManager {
         optionDialogView.setOptionDialogParams(alertDialogParams);
         windowManager.addView(optionDialogView, alertDialogParams);
         optionDialogView.setVisibility(View.INVISIBLE);
+    }
+
+    // Initialize the toy ball
+    public void createBall(Context context) {
+        windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        ballView = new BallView(context, this, spriteView.screenWidth, spriteView.screenHeight);
+        WindowManager.LayoutParams ballParams = setParams(ballView.ballWidth, ballView.ballHeight);
+        ballView.setBallParams(ballParams);
+        windowManager.addView(ballView, ballParams);
+        ballView.setVisibility(View.GONE);
     }
 
     // Set layout parameters
@@ -317,13 +329,13 @@ public class DesktopSpriteManager {
             Log.w("myApp", description);
             //for test
             hideDialogView();
-            spriteView.sleep_after_play_aeolian();
-            showOptionDialog(description + " now", "set a beach background", "cancel", 4000);
+            spriteView.play_sunny();
+            showOptionDialog(description + " now", "set a beach background", "cancel", 10000);
         } else if (mainWeather.equals("Rain") || mainWeather.equals("Snow") || mainWeather.equals("Drizzle") || mainWeather.equals("Clouds")) {
             Log.w("myApp", description);
             hideDialogView();
 
-            spriteView.sleep_after_play_aeolian();
+            spriteView.play_rain();
 
             showOptionDialog(description + " now", "give baby an umbrella", "cancel", 4000);
 
@@ -332,7 +344,7 @@ public class DesktopSpriteManager {
             hideDialogView();
 
             //for test
-            spriteView.sleep_after_play_aeolian();
+            spriteView.play_thunder();
 
             showOptionDialog(description + " now", "give baby an earphone", "cancel", 4000);
 
@@ -465,14 +477,14 @@ public class DesktopSpriteManager {
 
     public void showActionOnWeather() {
         if (this.weather.equals("Clear")) {
-            spriteView.play_shower();
+            spriteView.play_sunny_after();
             showDialog("Playing on beach!", 2000);
         } else if (this.weather.equals("Rain") || this.weather.equals("Snow") || this.weather.equals("Drizzle") || this.weather.equals("Clouds")) {
-            spriteView.play_shower();
+            spriteView.play_rain_after();
             showDialog("Lovely Umbrella!", 2000);
 
         } else if (this.weather.equals("Thunderstorm")) {
-            spriteView.play_shower();
+            spriteView.play_thunder_after();
             showDialog("Wonderful Songs!", 2000);
 
         } else {
@@ -483,34 +495,31 @@ public class DesktopSpriteManager {
         spriteView.setToDefaultView();
     }
 
+    public void playBall() {
+        if (!playingBall) {
+            spriteView.setCurrent_state(1);
+            ballView.setVisibility(View.VISIBLE);
+            playingBall = true;
+        }
+        else {
+            spriteView.setCurrent_state(0);
+            ballView.setVisibility(View.GONE);
+            playingBall = false;
+            spriteView.setToDefaultView();
+        }
+    }
 
-//    public void showAlterDialog(Context context){
-//        final AlertDialog.Builder alterDiaglog = new AlertDialog.Builder(context);
-////        alterDiaglog.setIcon(R.drawable.icon);//图标
-//        alterDiaglog.setTitle("简单的dialog");//文字
-//        alterDiaglog.setMessage("生存还是死亡");//提示消息
-//        //积极的选择
-//        alterDiaglog.setPositiveButton("生存", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//            }
-//        });
-//        //消极的选择
-//        alterDiaglog.setNegativeButton("死亡", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//            }
-//        });
-//        //中立的选择
-//        alterDiaglog.setNeutralButton("不生不死", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//            }
-//        });
-//
-//        //显示
-//        alterDiaglog.show();
-//    }
+    public void moveBall(float dx, float dy) {
+        if (playingBall)
+            ballView.updatePosition(dx, dy);
+    }
 
+    public void changeToSeeLeft() {
+        spriteView.setToSeeLeft();
+    }
+
+    public void changeToSeeRight() {
+        spriteView.setToSeeRight();
+    }
 
 }
