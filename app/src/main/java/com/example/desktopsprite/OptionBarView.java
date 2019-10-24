@@ -102,17 +102,13 @@ public class OptionBarView extends LinearLayout {
             }
         });
 
-        final Button homeBtn = findViewById(R.id.btn_home);
-        homeBtn.setOnClickListener(new View.OnClickListener() {
+        final Button ballBtn = findViewById(R.id.btn_ball);
+        ballBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.w("myApp", "Go Home!");
-                desktopSpriteManager.showDialog("Go Home!", 1000);
-                desktopSpriteManager.backHome();
-                desktopSpriteManager.setOut(false);
+                Log.w("myApp", "Ball!");
+                desktopSpriteManager.playBall();
                 desktopSpriteManager.hideOptionBar();
-
             }
         });
 
@@ -130,9 +126,13 @@ public class OptionBarView extends LinearLayout {
         stepBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w("myApp", "Step!");
                 int steps = desktopSpriteManager.getSteps();
-                desktopSpriteManager.showDialog("Your Steps Today: \n" + steps, 2000);
+                String comment;
+                if (steps >= 1000)
+                    comment = "(*^▽^*)";
+                else
+                    comment = "Please spend more time with me \n ╥﹏╥";
+                desktopSpriteManager.showDialog("We walked " + steps + " steps together." + comment, 3000);
                 desktopSpriteManager.hideOptionBar();
             }
         });

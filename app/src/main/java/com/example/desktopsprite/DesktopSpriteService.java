@@ -89,6 +89,7 @@ public class DesktopSpriteService extends Service {
             spriteManager.createOptionBar(getApplicationContext());
             spriteManager.createDialog(getApplicationContext());
             spriteManager.createOptionDialog(getApplicationContext());
+            spriteManager.createBall(getApplicationContext());
         } else {
             // If the sprite exist, destroy all relevant instances
             spriteExist = false;
@@ -157,15 +158,6 @@ public class DesktopSpriteService extends Service {
         spriteManager.startVomit();
     }
 
-
-    //test
-//    public void getLocation() {
-//        double[] current_location = locationGPSManager.getI;
-//        Log.w("myApp", "longitude: " + current_location[0] + " latitude: " + current_location[1]);
-//
-//    }
-
-
     class RefreshTask extends TimerTask {
 
         @Override
@@ -190,6 +182,14 @@ public class DesktopSpriteService extends Service {
             message.what = 2;
             handler.sendMessage(message);
         }
+    }
+
+    /*
+     * Called by SensorsManger when Accelerometer sensor changed
+     */
+    public void detectMovement(float dx, float dy) {
+        //Log.w("myApp", "dx: " + dx + " dy: " + dy);
+        spriteManager.moveBall(dx*20, dy*20);
     }
 
 
