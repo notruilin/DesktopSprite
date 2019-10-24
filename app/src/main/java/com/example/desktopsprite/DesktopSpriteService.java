@@ -147,8 +147,6 @@ public class DesktopSpriteService extends Service {
         spriteManager.showLandmarkBuilding();
     }
 
-
-
     /*
      * Called by SensorsManger when the user keeps shaking the phone, "times" presents how many times did the user shake
      * @param   times   how many times does the user shake the phone

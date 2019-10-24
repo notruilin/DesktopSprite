@@ -131,7 +131,7 @@ public class OptionBarView extends LinearLayout {
                 if (steps >= 1000)
                     comment = "(*^▽^*)";
                 else
-                    comment = "Please spend more time with me \n ╥﹏╥";
+                    comment = " Please spend more time with me \n ╥﹏╥";
                 desktopSpriteManager.showDialog("We walked " + steps + " steps together." + comment, 3000);
                 desktopSpriteManager.hideOptionBar();
             }

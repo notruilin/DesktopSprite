@@ -83,7 +83,7 @@ public class OptionDialogView extends LinearLayout {
     }
 
     /*
-     * Set the option bar position
+     * Set the option dialog position
      * @param   x       the x coordinate of sprite (if left == true, left edge, if left == false, right edge)
      * @param   y       the y coordinate of sprite (top edge)
      * @param   left    if left == true, show the dialog on the left side of sprite
