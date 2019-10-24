@@ -84,7 +84,7 @@ public class DesktopSpriteService extends Service {
             if (locationGPSManager == null)
                 locationGPSManager = new LocationGPSManager(this);
             spriteExist = true;
-            spriteManager = new DesktopSpriteManager();
+            spriteManager = new DesktopSpriteManager(handler);
             spriteManager.showSprite(getApplicationContext());
             spriteManager.createOptionBar(getApplicationContext());
             spriteManager.createDialog(getApplicationContext());
@@ -99,7 +99,8 @@ public class DesktopSpriteService extends Service {
         // start circulation timer
         if (timer == null) {
             timer = new Timer();
-            timer.scheduleAtFixedRate(new RefreshTask(), 3000, 5000);
+//            timer.schedule(new RefreshTask(), 3000);
+            timer.scheduleAtFixedRate(new RefreshTask(), 5000, 10000);
         }
 
         if (timer2 == null) {
@@ -170,6 +171,8 @@ public class DesktopSpriteService extends Service {
         @Override
         public void run() {
             Log.w("wy", "TIMETASK RUNNING: ");
+            if(handler.hasMessages(1)) return;
+            if(spriteManager.is_crawling()) return;
             Message message = new Message();
             message.what = 1;
             handler.sendMessage(message);

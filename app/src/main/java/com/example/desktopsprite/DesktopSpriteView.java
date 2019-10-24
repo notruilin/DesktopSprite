@@ -13,6 +13,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.SoundPool;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /*
  * This class implements the view of sprite
@@ -39,6 +42,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     // If the sprite is showing
     public boolean showing = false;
+    public boolean is_crawling = false;
     /*
      * 0 for default
      * 1 for some events is running
@@ -47,6 +51,9 @@ public class DesktopSpriteView extends LinearLayout {
     private SoundPool spool;
     private Map<String,Integer> sound_dict = new HashMap<String,Integer> ();
     private boolean activate_media = false;
+    private Handler myhander;
+    private boolean crawl_left = false;
+
 
     public int spriteWidth, spriteHeight;
     public int screenWidth, screenHeight;
@@ -71,8 +78,10 @@ public class DesktopSpriteView extends LinearLayout {
 
     private ImageView imageView;
 
-    public DesktopSpriteView(Context context, DesktopSpriteManager desktopSpriteManager) {
+
+    public DesktopSpriteView(Context context, DesktopSpriteManager desktopSpriteManager,Handler handler) {
         super(context);
+        this.myhander = myhander;
         this.desktopSpriteManager = desktopSpriteManager;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater.from(context).inflate(R.layout.sprite_layout, this);
@@ -96,6 +105,7 @@ public class DesktopSpriteView extends LinearLayout {
         //prepare media content
 //        init_sound_pool();
 //        load_media(context);
+
     }
 
     public void initSpritePosition() {
@@ -355,6 +365,9 @@ public class DesktopSpriteView extends LinearLayout {
                 setToDefaultView();
             }
         }, duration);
+
+        Log.w("WY","default_when_animation_ends");
+        sent_message(1);
     }
 
     void showHolding() {
@@ -388,6 +401,8 @@ public class DesktopSpriteView extends LinearLayout {
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
         this.current_state = 0;
+
+        sent_message(1);
     }
 
     void setToDefaultViewRightSee() {
@@ -396,6 +411,8 @@ public class DesktopSpriteView extends LinearLayout {
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+        sent_message(1);
+
     }
 
     void setToGround() {
@@ -417,31 +434,36 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
 
-    public boolean play_crawl(boolean crawl_left) {
-
+    public boolean play_crawl() {
+        is_crawling = true;
         //check current state
         if (current_state != 0) {
             return false;
         }
-
-//        SoundPool media = SoundPool()
-
-        int dx = 200;
-        int dy = 0;
-        int duration = 1500;
-
-
         if(this.isVerticalEdge(spriteParams.x) == 1){
             crawl_left = true;
 
         }else if (this.isVerticalEdge(spriteParams.x) == 0){
             crawl_left = false;
         }
+
+//        SoundPool media = SoundPool()
+
+        //epsilon
+        int dx;
+        int dy = 0;
+        int duration = 1500;
+        float speed = 200/1500;
+
+
+
         if (crawl_left ) {
-            dx = -1 * dx;
+            dx = 0 - spriteParams.x;
             imageView.setImageResource(R.drawable.crawl_anim_left);
+
         }
         else {
+            dx = screenWidth- (int)epsilon+1 - spriteParams.x;
             imageView.setImageResource(R.drawable.crawl_anim);
         }
 
@@ -453,24 +475,34 @@ public class DesktopSpriteView extends LinearLayout {
 
 
         Log.w("WY", "spriteX = " + spriteParams.x);
-        Log.w("WY", "spriteY = " + spriteParams.y);
-        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x + dx).setDuration(duration);
+        //Log.w("WY", "spriteY = " + spriteParams.y);
+        Log.w("WY", "dx = " + dx);
+        Log.w("WY", "crawl_left = " + crawl_left);
+
+        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x + dx).setDuration(4000);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setSpritePosition((int) (float) animation.getAnimatedValue(), spriteParams.y);
+                if(current_state==0){
+                    setSpritePosition((int) (float) animation.getAnimatedValue(), spriteParams.y);
+                }
             }
         });
-
+        animator.addListener(new AnimatorListenerAdapter()
+        {
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                if(current_state==0)
+                    play_crawl();
+            }
+        });
         animator.start();
 
 
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.setOneShot(true);
         animationDrawable.start();
 
-
-        default_when_animation_ends(animationDrawable);
         return true;
     }
 
@@ -503,6 +535,21 @@ public class DesktopSpriteView extends LinearLayout {
 
     }
 
+    private void sent_message(int i){
+        is_crawling = false;
+//        Timer timer = new Timer();
+//        timer.schedule(new RefreshTask(), 3000);
+    }
 
+    class RefreshTask extends TimerTask {
 
+        @Override
+        public void run() {
+            Log.w("wy", "TIMETASK RUNNING: ");
+            Message message = new Message();
+            message.what = 1;
+            myhander.sendMessage(message);
+            //spriteManager.random_crawl();
+        }
+    }
 }
