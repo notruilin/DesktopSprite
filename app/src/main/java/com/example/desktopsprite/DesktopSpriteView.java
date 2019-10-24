@@ -449,10 +449,10 @@ public class DesktopSpriteView extends LinearLayout {
             return false;
         }
         Log.w("WY","play_crawl() \ncurrent_state == "+current_state);
-        if(this.isVerticalEdge(spriteParams.x) == 1){
+        if(spriteParams.x > 10){
             crawl_left = true;
-
-        }else if (this.isVerticalEdge(spriteParams.x) == 0){
+        }
+        else {
             crawl_left = false;
         }
 
@@ -472,28 +472,39 @@ public class DesktopSpriteView extends LinearLayout {
 
         }
         else {
-            dx = screenWidth- (int)epsilon+1 - spriteParams.x;
+            dx = 744 - spriteParams.x;
+            //dx = screenHeight -  - spriteParams.x;
             imageView.setImageResource(R.drawable.crawl_anim);
         }
 
 
 //        ObjectAnimator.ofFloat(imageView,"translationX",spriteX,200F).setDuration(duration).start();
-        if(activate_media){
-            spool.play(sound_dict.get("crawl"),1,1,1,1,1);
-        }
+//        if(activate_media){
+//            spool.play(sound_dict.get("crawl"),1,1,1,1,1);
+//        }
+
+        final int[] location = new int[2];
+        imageView.getLocationOnScreen(location);
+
 
 
         Log.w("WY", "spriteX = " + spriteParams.x);
+        Log.w("WY", "get_X = " + location[0]);
         //Log.w("WY", "spriteY = " + spriteParams.y);
         Log.w("WY", "dx = " + dx);
+        Log.w("WY", "screenWidth = " + screenWidth);
+        Log.w("WY", "screenHeight = " + screenHeight);
         Log.w("WY", "crawl_left = " + crawl_left);
 
-        ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x + dx).setDuration(4000);
+        final ValueAnimator animator = ValueAnimator.ofFloat(spriteParams.x, spriteParams.x + dx).setDuration(4000);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 if(current_state==0){
                     setSpritePosition((int) (float) animation.getAnimatedValue(), spriteParams.y);
+                }
+                else {
+                    animator.cancel();
                 }
             }
         });
@@ -504,6 +515,7 @@ public class DesktopSpriteView extends LinearLayout {
             {
                 if(current_state==0)
                     play_crawl();
+
             }
         });
         animator.start();
