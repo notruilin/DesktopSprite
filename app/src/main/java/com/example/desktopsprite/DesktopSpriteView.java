@@ -482,6 +482,13 @@ public class DesktopSpriteView extends LinearLayout {
         this.current_state=1;
     }
 
+    void play_landmark(){
+        imageView.setImageResource(R.drawable.st_pauls_church);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+        this.current_state=1;
+    }
+
     void onDoubleClick() {
         if (optionBarShowing) {
             current_state = 0;
