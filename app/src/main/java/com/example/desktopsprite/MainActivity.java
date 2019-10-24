@@ -15,11 +15,26 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+
+import android.util.Log;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /*
  * This class implements the MainActivity
@@ -37,23 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         instance = this;
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-//        Button button = findViewById(R.id.button);
-//
-//        ViewGroup rootView = findViewById(R.id.root_view);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.w("myApp", "Click Button!");
-//                if (!Settings.canDrawOverlays(MainActivity.this)) {
-//                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-//                    startActivityForResult(intent, 0);
-//                }
-//                Intent intent = new Intent(MainActivity.this, DesktopSpriteService.class);
-//                startService(intent);
-//            }
-//        });
 
         if (!Settings.canDrawOverlays(MainActivity.this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
@@ -69,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        HttpCall httpCall = new HttpCall();
+        httpCall.setMethodtype(HttpCall.GET);
+        httpCall.setUrl("https://mobile.xiyunkey.com/weather.php");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("city", "Melbourne");
+        httpCall.setParams(params);
+        new HttpRequest() {
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                Log.w("weather", "response from server: " + response);
+            }
+        }.execute(httpCall);
     }
 
     /*
