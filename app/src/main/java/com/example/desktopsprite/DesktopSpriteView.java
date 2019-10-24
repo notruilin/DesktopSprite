@@ -159,7 +159,10 @@ public class DesktopSpriteView extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                current_state = 0;
+                if(current_state != 2)
+                    current_state = 0;
+//                Log.w("WY","MotionEvent.ACTION_UP");
+//                Log.w("WY","current_state == "+current_state);
                 if (holding) {
                     holding = false;
                     // Embed the sprite to the bottom edge
@@ -425,11 +428,16 @@ public class DesktopSpriteView extends LinearLayout {
 
     void onDoubleClick() {
         if (optionBarShowing) {
+            current_state = 0;
             desktopSpriteManager.hideOptionBar();
-            // this.current_state =0;
         } else {
+            // 2 for show OptionBar
+            setToDefaultView();
+            current_state = 2;
+            imageView.clearAnimation();
+            this.clearAnimation();
+            Log.w("WY","onDoubleClick() \ncurrent_state == "+current_state);
             desktopSpriteManager.showOptionBar(5000);
-            // this.current_state = 1;
         }
     }
 
@@ -440,6 +448,7 @@ public class DesktopSpriteView extends LinearLayout {
         if (current_state != 0) {
             return false;
         }
+        Log.w("WY","play_crawl() \ncurrent_state == "+current_state);
         if(this.isVerticalEdge(spriteParams.x) == 1){
             crawl_left = true;
 
