@@ -100,7 +100,7 @@ public class DesktopSpriteService extends Service {
         if (timer == null) {
             timer = new Timer();
 //            timer.schedule(new RefreshTask(), 3000);
-            timer.scheduleAtFixedRate(new RefreshTask(), 3000, 5000);
+            timer.scheduleAtFixedRate(new RefreshTask(), 5000, 10000);
         }
 
         if (timer2 == null) {
