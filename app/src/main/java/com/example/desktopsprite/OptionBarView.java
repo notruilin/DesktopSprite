@@ -129,10 +129,10 @@ public class OptionBarView extends LinearLayout {
                 int steps = desktopSpriteManager.getSteps();
                 String comment;
                 if (steps >= 1000)
-                    comment = "(*^▽^*)";
+                    comment = petName + " love you \n(*^▽^*)";
                 else
-                    comment = " Please spend more time with me \n ╥﹏╥";
-                desktopSpriteManager.showDialog("We walked " + steps + " steps together." + comment, 3000);
+                    comment = "Please spend more time with " + petName + " \n╥﹏╥";
+                desktopSpriteManager.showDialog("We walked " + steps + " steps together. " + comment, 3000);
                 desktopSpriteManager.hideOptionBar();
             }
         });

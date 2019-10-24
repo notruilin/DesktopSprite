@@ -93,7 +93,7 @@ public class OptionDialogView extends LinearLayout {
         if (left)   leftSide = - getWidth();
         if (!desktopSpriteManager.spriteShowing())  return;
         dialogParams.x = x + leftSide;
-        dialogParams.y = y + 300;
+        dialogParams.y = y - 300;
         windowManager.updateViewLayout(this, dialogParams);
     }
 

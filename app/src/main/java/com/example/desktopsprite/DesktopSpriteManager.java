@@ -325,6 +325,9 @@ public class DesktopSpriteManager {
             e.printStackTrace();
         }
 
+        //mainWeather = "Thunderstorm";
+        //this.weather = mainWeather;
+
         if (mainWeather.equals("Clear")) {
             Log.w("myApp", description);
             //for test
