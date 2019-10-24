@@ -325,11 +325,13 @@ public class DesktopSpriteManager {
             e.printStackTrace();
         }
 
+
         if (mainWeather.equals("Clear")) {
             Log.w("myApp", description);
             //for test
             hideDialogView();
             spriteView.play_sunny();
+
             showOptionDialog(description + " now", "set a beach background", "cancel", 10000);
         } else if (mainWeather.equals("Rain") || mainWeather.equals("Snow") || mainWeather.equals("Drizzle") || mainWeather.equals("Clouds")) {
             Log.w("myApp", description);
