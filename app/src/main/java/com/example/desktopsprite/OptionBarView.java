@@ -48,7 +48,7 @@ public class OptionBarView extends LinearLayout {
     public void setPosition(int x, int y) {
         if (!desktopSpriteManager.spriteShowing())  return;
         barParams.x = x - this.getWidth()/2;
-        barParams.y = y;
+        barParams.y = y - 70;
         windowManager.updateViewLayout(this, barParams);
     }
 
