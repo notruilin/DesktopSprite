@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -34,6 +35,7 @@ import java.net.URLEncoder;
  */
 
 public class DesktopSpriteManager {
+    private Handler handler;
     private WindowManager windowManager;
     private DesktopSpriteView spriteView;
     private OptionBarView optionBarView;
@@ -59,11 +61,15 @@ public class DesktopSpriteManager {
 
     Context context;
 
+    public DesktopSpriteManager(Handler handler) {
+        this.handler = handler;
+    }
+
     // Initialize the sprite view
     public void showSprite(Context context) {
         this.context = context;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        spriteView = new DesktopSpriteView(context, this);
+        spriteView = new DesktopSpriteView(context, this,handler);
         WindowManager.LayoutParams spriteParams = setParams(spriteView.spriteWidth, spriteView.spriteHeight);
         spriteView.setSpriteParams(spriteParams);
         windowManager.addView(spriteView, spriteParams);
@@ -275,8 +281,7 @@ public class DesktopSpriteManager {
     }
 
     public boolean random_crawl() {
-        boolean crawl_left = Math.random() < 0.5;
-        spriteView.play_crawl(crawl_left);
+        spriteView.play_crawl();
         return true;
     }
 
@@ -343,6 +348,10 @@ public class DesktopSpriteManager {
         double locationNow[] = LocationGPSManager.getInstance().getLocation();
         Log.w("myApp", "lat=" + locationNow[0] + "&lon=" + locationNow[1]);
         new GetData().execute("lat=" + locationNow[0] + "&lon=" + locationNow[1]);
+    }
+
+    public boolean is_crawling() {
+        return spriteView.is_crawling;
     }
 
 
