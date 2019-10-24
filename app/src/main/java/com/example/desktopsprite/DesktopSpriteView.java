@@ -528,7 +528,7 @@ public class DesktopSpriteView extends LinearLayout {
 
         }
         else {
-            dx = 744 - spriteParams.x;
+            dx = (screenWidth - 336) - spriteParams.x;
             //dx = screenHeight -  - spriteParams.x;
             imageView.setImageResource(R.drawable.crawl_anim);
         }
