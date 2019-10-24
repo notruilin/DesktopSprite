@@ -30,6 +30,7 @@ public class LocationGPSManager implements LocationListener {
 
 
     private double longitude = -1, latitude = -1;
+    private boolean remindLocation = false;
 
     public static LocationGPSManager getInstance() {
         return instance;
@@ -62,6 +63,11 @@ public class LocationGPSManager implements LocationListener {
         this.latitude = location.getLatitude();
         System.out.println("longitude: " + longitude + " latitude: " + latitude);
         //Log.w("myApp", "longitude: " + longitude + " latitude: " + latitude);
+        if (144.76<longitude && longitude<145.16 && -38.01<latitude && latitude<-37.61
+                &&remindLocation ==false){
+            remindLocation = true;
+            desktopSpriteService.remindMelbourne();
+        }
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -74,6 +80,10 @@ public class LocationGPSManager implements LocationListener {
 
     public void onProviderDisabled(String provider) {
 
+    }
+
+    public void setReminderLocation(boolean boo){
+        this.remindLocation = boo;
     }
 
 }

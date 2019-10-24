@@ -49,11 +49,13 @@ public class DesktopSpriteManager {
      * SilenceMode == 2, disable both dialog and option bar
      */
     private int silenceMode = 0;
+    private boolean out = false;
 
     private int response_from_alert_dialog = 1;
     private boolean if_response = false;
     private int questionNumber = 0;
     private String weather = "Clear";
+    private boolean tooDark = false;
 
     Context context;
 
@@ -252,11 +254,6 @@ public class DesktopSpriteManager {
         return spriteView.showing;
     }
 
-    public void checkLight() {
-        float light = SensorsManager.getInstance().getLight();
-        showDialog("The light is " + light + " lx", 3000);
-    }
-
     public void feed_milk() {
         spriteView.drinkMilk();
     }
@@ -280,11 +277,19 @@ public class DesktopSpriteManager {
     public boolean random_crawl() {
         boolean crawl_left = Math.random() < 0.5;
         spriteView.play_crawl(crawl_left);
-
-
         return true;
     }
 
+    public void showLandmarkBuilding(){
+        if (this.out){
+            showDialog("You are near the St.Paul Church!!!", 1000);
+            spriteView.play_shower();
+        }else{}
+    }
+
+    public void setOut(boolean boo){
+        this.out = boo;
+    }
 
     public void showWeather(String str) {
         Log.w("myApp", "Have get Weather" + str);
@@ -334,10 +339,9 @@ public class DesktopSpriteManager {
 
 
     public void getCurrentLocation() {
-
+        LocationGPSManager.getInstance().setReminderLocation(false);
         double locationNow[] = LocationGPSManager.getInstance().getLocation();
         Log.w("myApp", "lat=" + locationNow[0] + "&lon=" + locationNow[1]);
-
         new GetData().execute("lat=" + locationNow[0] + "&lon=" + locationNow[1]);
     }
 
@@ -400,13 +404,29 @@ public class DesktopSpriteManager {
 
     }
 
-    public void setResponse(int response) {
-        this.response_from_alert_dialog = response;
+    public void remindDark(float light){
+        showDialog("The Environment is too Dark! I'll fall into sleep", 3000);
+        spriteView.sleep_after_play_aeolian();
     }
 
-    public int getResponse() {
-        return this.response_from_alert_dialog;
+    public void remindLightful(float light){
+        showDialog("The ambient light is "+light+" lux now, too bright! Stop Reading", 3000);
     }
+
+
+
+
+
+
+
+
+//    public void setResponse(int response) {
+//        this.response_from_alert_dialog = response;
+//    }
+//
+//    public int getResponse() {
+//        return this.response_from_alert_dialog;
+//    }
 
 //    public void set_if_response(boolean boo){
 //        this.if_response = boo;

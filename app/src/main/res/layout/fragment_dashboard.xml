@@ -1,37 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <Switch
+        android:id="@+id/switch_clock"
+        android:layout_width="335dp"
+        android:layout_height="46dp"
+        android:text="show clock alarm"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="30dp">
+        app:layout_constraintVertical_bias="0.054" />
 
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="show clock alarm" />
+    <Switch
+        android:id="@+id/switch_weather"
+        android:layout_width="335dp"
+        android:layout_height="46dp"
+        android:text="show weather"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_clock"
+        app:layout_constraintVertical_bias="0.018" />
 
-        <Switch
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="show weather" />
+    <Button
+        android:id="@+id/btn_save_setting"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Save setting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.819"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_weather"
+        app:layout_constraintVertical_bias="0.066" />
 
-        <Button
-            android:id="@+id/btn_save_setting"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="80dp"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Save setting" />
-    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/weather_layout"
+        android:layout_width="335dp"
+        android:layout_height="366dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_setting"
+        app:layout_constraintVertical_bias="0.191">
+
+        <TextView
+            android:id="@+id/weather_datetime2"
+            android:layout_width="240dp"
+            android:layout_height="56dp"
+            android:fontFamily="serif-monospace"
+            android:text="Humidity: 38 %\nWind: 2.1 km/h"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weather"
+            app:layout_constraintVertical_bias="0.103" />
+
+        <TextView
+            android:id="@+id/weather_title"
+            android:layout_width="335dp"
+            android:layout_height="56dp"
+            android:background="#00000000"
+            android:fontFamily="monospace"
+            android:text="Melbourne Weather Status"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.051" />
+
+        <TextView
+            android:id="@+id/weather_datetime"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
+            android:fontFamily="serif-monospace"
+            android:text="Wednesday 9:52 am\n23rd October, 2019\nRainy"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weather_title"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/weather"
+            android:layout_width="132dp"
+            android:layout_height="48dp"
+            android:text="19℃"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.266"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/weather_datetime"
+            app:layout_constraintVertical_bias="0.06" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.055"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weather_datetime"
+            app:layout_constraintVertical_bias="0.06"
+            app:srcCompat="@drawable/weather_sunny"
+            tools:srcCompat="@drawable/weather_sunny" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
