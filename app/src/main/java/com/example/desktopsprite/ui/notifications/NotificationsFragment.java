@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +30,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.desktopsprite.DesktopSpriteService;
 import com.example.desktopsprite.R;
+import com.example.desktopsprite.SetActivity;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -37,13 +41,30 @@ public class NotificationsFragment extends Fragment {
     private PendingIntent pi;
 
     private NotificationsViewModel notificationsViewModel;
-//
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        getActivity().setContentView(R.layout.fragment_notifications);
-//
-//
-//    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.btn_add) {
+            Log.w("test", "onOptionsItemSelected: ");
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +72,7 @@ public class NotificationsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
+        setHasOptionsMenu(true);
         alarm = root.findViewById(R.id.clock_time_picker);
         alarm.setIs24HourView(Boolean.TRUE);
         initAlarm();

@@ -61,6 +61,11 @@ public class DashboardFragment extends Fragment {
         switchClock.setChecked(spm.getClockState());
         switchWeather.setChecked(spm.getWeatherState());
 
+        if (spm.getWeatherState()) {
+            ConstraintLayout cv = root.findViewById(R.id.weather_layout);
+            cv.setVisibility(View.VISIBLE);
+        }
+
         HttpCall httpCall = new HttpCall();
         httpCall.setMethodtype(HttpCall.GET);
         httpCall.setUrl("https://mobile.xiyunkey.com/weather.php");

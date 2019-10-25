@@ -77,7 +77,7 @@ public class DesktopSpriteManager {
         windowManager.addView(spriteView, spriteParams);
         spriteView.initSpritePosition();
         spriteView.showing = true;
-        MainActivity.getInstance().updateButton("Dismiss");
+        MainActivity.getInstance().updateButton("See You.");
     }
 
     // Initialize the option bar view

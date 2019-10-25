@@ -92,7 +92,7 @@ public class DesktopSpriteService extends Service {
         } else {
             // If the sprite exist, destroy all relevant instances
             spriteExist = false;
-            MainActivity.getInstance().updateButton("Summon");
+            MainActivity.getInstance().updateButton("Hello");
             onDestroy();
         }
 

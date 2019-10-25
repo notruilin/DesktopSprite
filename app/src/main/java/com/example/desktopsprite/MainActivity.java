@@ -14,33 +14,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
-import android.icu.text.IDNA;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /*
  * This class implements the MainActivity
@@ -59,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        int resID = getResources().getIdentifier("weather_04d", "drawable", getPackageName());
-//        Log.w("test resource", "onCreate: "+ resID );
 
         if (!Settings.canDrawOverlays(MainActivity.this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
@@ -78,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
     }
+
+
 
     /*
      * Method to modify the text of the button on the home screen page
