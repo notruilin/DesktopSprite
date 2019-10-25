@@ -262,6 +262,7 @@ public class DesktopSpriteView extends LinearLayout {
     }
 
     void playVomitAnim() {
+        vomiting = true;
         imageView.setImageResource(R.drawable.vomit_anim);
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
@@ -351,6 +352,7 @@ public class DesktopSpriteView extends LinearLayout {
 
     // Set the sprite to default view
     void default_when_animation_ends(AnimationDrawable animationDrawable) {
+        Log.w("myApp", "to default");
         int duration = 0;
         for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
             duration += animationDrawable.getDuration(i);
@@ -359,7 +361,8 @@ public class DesktopSpriteView extends LinearLayout {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                setToDefaultView();
+                if (!desktopSpriteManager.playingBall)
+                    setToDefaultView();
                 if (vomiting = true)    vomiting = false;
             }
         }, duration);
@@ -398,7 +401,8 @@ public class DesktopSpriteView extends LinearLayout {
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
-        this.current_state = 0;
+        if (!desktopSpriteManager.playingBall)
+            this.current_state = 0;
 
         sent_message(1);
     }
@@ -419,16 +423,6 @@ public class DesktopSpriteView extends LinearLayout {
         defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
         animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
-    }
-
-    void setToDefaultViewRightSee() {
-        imageView.setImageResource(R.drawable.see_right);
-        defaultImageHeight = imageView.getDrawable().getIntrinsicHeight();
-        defaultImageWidth = imageView.getDrawable().getIntrinsicWidth();
-        animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
-        sent_message(1);
-
     }
 
     void setToGround() {

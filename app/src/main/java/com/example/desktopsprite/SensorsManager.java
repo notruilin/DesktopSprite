@@ -32,9 +32,6 @@ public class SensorsManager implements SensorEventListener {
     // If current too close event has reported
     private boolean tooCloseReport = false;
 
-    private boolean tooDarkReport = false;
-    private boolean tooLightfulReport = false;
-
     private static final long ACCELEROMETER_THRESHOLD = 3;
     private long lastAccelerometerCheckTime;
     private int accelerometerCount;
@@ -100,25 +97,7 @@ public class SensorsManager implements SensorEventListener {
 
     private void detectLight(SensorEvent event) {
         light = event.values[0];
-        if (light < 100){
-            if(!tooDarkReport){
-                tooDarkReport = true;
-                desktopSpriteService.tooDark(light);
-            }
-        }
-        if (light > 20000){
-            if(!tooLightfulReport){
-                tooLightfulReport = true;
-                desktopSpriteService.tooLightful(light);
-            }
-        }
-        if (light>=100 & light<=20000){
-            if(tooDarkReport){
-                desktopSpriteService.normalLight(light);
-            }
-            tooDarkReport = false;
-            tooLightfulReport = false;
-        }
+
 
     }
 
@@ -144,7 +123,7 @@ public class SensorsManager implements SensorEventListener {
             float speed = Math.abs(event.values[0] - lastX) + Math.abs(event.values[1] - lastY) + Math.abs(event.values[2] - lastZ) / duration * 1000;
             if (speed > ACCELEROMETER_THRESHOLD) {
                 accelerometerCount += 1;
-                if (accelerometerCount > 50) {
+                if (accelerometerCount > 100) {
                     desktopSpriteService.keepShaking(accelerometerCount);
                 }
             }
@@ -161,10 +140,5 @@ public class SensorsManager implements SensorEventListener {
     private void detectStepCounter(SensorEvent event) {
         if (stepBeforeOpen == 0)    stepBeforeOpen = (int)event.values[0];
         stepCount = (int)event.values[0];
-    }
-
-    public void resetLightReminder(){
-        tooDarkReport = false;
-        tooLightfulReport = false;
     }
 }

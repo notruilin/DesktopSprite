@@ -1,6 +1,7 @@
 package com.example.desktopsprite;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -64,6 +65,7 @@ public class BallView extends LinearLayout {
         if (ballParams.y > screenHeight) ballParams.y = screenHeight;
         windowManager.updateViewLayout(this, ballParams);
 
+        Log.w("myApp", "x: " + ballParams.x);
         if (ballParams.x < screenWidth / 2)
             desktopSpriteManager.changeToSeeLeft();
         else

@@ -51,7 +51,6 @@ public class DesktopSpriteService extends Service {
             switch (msg.what) {
                 case 2:
                     Log.w("myApp", "handelMessage: 2");
-                    sensorsManager.resetLightReminder();
                     break;
             }
         }
@@ -125,23 +124,6 @@ public class DesktopSpriteService extends Service {
         Log.w("myApp", "Too close!!!!!!!!!!!!!!!!!");
     }
 
-    public void tooDark(float light){
-        Log.w("myApp", "Too Dark");
-        spriteManager.remindDark(light);
-
-    }
-
-    public void tooLightful(float light){
-        Log.w("myApp", "Too Dark");
-        spriteManager.remindLightful(light);
-    }
-
-    public void normalLight(float light){
-        spriteManager.showDialog("Ambient brightness is "+light+" lux now. " +
-                "Comfortable for eyes!", 4000);
-        spriteManager.setBabyDeaultView();
-    }
-
     public void remindMelbourne(){
         Log.w("myApp", "Near Melbourne");
         spriteManager.showLandmarkBuilding();
@@ -186,7 +168,7 @@ public class DesktopSpriteService extends Service {
      * Called by SensorsManger when Accelerometer sensor changed
      */
     public void detectMovement(float dx, float dy) {
-        //Log.w("myApp", "dx: " + dx + " dy: " + dy);
+        Log.w("myApp", "detect!");
         spriteManager.moveBall(dx*20, dy*20);
     }
 

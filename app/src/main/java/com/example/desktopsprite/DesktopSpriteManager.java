@@ -417,10 +417,6 @@ public class DesktopSpriteManager {
 
     }
 
-    public void backHome() {
-        spriteView.setToDefaultView();
-    }
-
 
     public int getSteps() {
         int steps = SensorsManager.getInstance().getStepCounter();
@@ -437,31 +433,21 @@ public class DesktopSpriteManager {
         showDialog("The ambient light is "+light+" lux now, too bright! Stop Reading", 3000);
     }
 
+    public void normalLight(float light) {
+        showDialog("Ambient brightness is "+light+" lux now. " + "Comfortable for eyes!", 4000);
+    }
 
-
-
-
-
-
-
-//    public void setResponse(int response) {
-//        this.response_from_alert_dialog = response;
-//    }
-//
-//    public int getResponse() {
-//        return this.response_from_alert_dialog;
-//    }
-
-//    public void set_if_response(boolean boo){
-//        this.if_response = boo;
-//    }
-//
-//    public boolean get_if_response(){
-//        return if_response;
-//    }
-
-    public void showDefault() {
-        spriteView.setToDefaultView();
+    public void showLight() {
+        float light = SensorsManager.getInstance().getLight();
+        if (light < 100){
+            remindDark(light);
+        }
+        if (light > 400){
+            remindLightful(light);
+        }
+        if (light>=100 & light<=400){
+            normalLight(light);
+        }
     }
 
     public void launchMainActivity() {
@@ -513,6 +499,7 @@ public class DesktopSpriteManager {
     }
 
     public void moveBall(float dx, float dy) {
+        Log.w("myApp", "Playing");
         if (playingBall)
             ballView.updatePosition(dx, dy);
     }

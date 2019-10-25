@@ -137,6 +137,16 @@ public class OptionBarView extends LinearLayout {
             }
         });
 
+        final Button lightBtn = findViewById(R.id.btn_light);
+        lightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w("myApp", "Light!");
+                desktopSpriteManager.showLight();
+                desktopSpriteManager.hideOptionBar();
+            }
+        });
+
         final Button stopBtn = findViewById(R.id.btn_stop);
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
