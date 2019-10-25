@@ -14,11 +14,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,6 +35,10 @@ import java.net.URL;
 import java.util.HashMap;
 
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        int resID = getResources().getIdentifier("weather_04d", "drawable", getPackageName());
+//        Log.w("test resource", "onCreate: "+ resID );
 
         if (!Settings.canDrawOverlays(MainActivity.this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
@@ -69,19 +77,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        HttpCall httpCall = new HttpCall();
-        httpCall.setMethodtype(HttpCall.GET);
-        httpCall.setUrl("https://mobile.xiyunkey.com/weather.php");
-        HashMap<String, String> params = new HashMap<>();
-        params.put("city", "Melbourne");
-        httpCall.setParams(params);
-        new HttpRequest() {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                Log.w("weather", "response from server: " + response);
-            }
-        }.execute(httpCall);
     }
 
     /*
