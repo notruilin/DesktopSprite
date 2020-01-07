@@ -23,6 +23,9 @@ Our team develped an mobile app of desktop virtual baby which works 
 - If you release your finger in midair, he will fall to the ground.
 <img src="https://github.com/notruilin/DesktopSprite/blob/master/img/fall.png" width="250">
 
+- Double click your baby to open the option panel.
+<img src="https://github.com/notruilin/DesktopSprite/blob/master/img/menu.png" width="250">
+
 - when your baby is hungry, you are gonna feed him. Choose to feed milk or complementary food.
 <img src="https://github.com/notruilin/DesktopSprite/blob/master/img/feed.png" width="250">
 <img src="https://github.com/notruilin/DesktopSprite/blob/master/img/feed1.png" width="250">
