@@ -1,5 +1,7 @@
 ## Virtual Sweet Baby - A desktop pet app for Android
-Many of us have been craving for a baby, or want to experience raising children, but you may not be able to have a real one, even if you know how much you would love to. Why not virtual ones then? Imagining having a virtual baby who is always with you; you enjoy its presense, care for it, play with it, be with it all day as you wish.
+Many of us have been craving for a baby, or want to experience raising children, but you may not be able to have a real one, even if you know how much you would love to. Why not virtual ones then?
+
+Imagining having a virtual baby who is always with you; you enjoy its presense, care for it, play with it, be with it all day as you wish.
 
 Our team develped an mobile app of desktop virtual baby which works on Android phones, with strong‑interactive. multi‑sensor‑involved, realistic functions, accompany you anywhere, anytime. 
 
